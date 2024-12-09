@@ -1,0 +1,133 @@
+---
+title: "YOUR PROJECT TITLE"
+subtitle: "DACSS 602 (Fall 2024)"
+author: Name 1, Name 2, and Name 3
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: Contents
+    toc-location: left
+    html-math-method: katex
+    theme: flatly
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
+    citations-hover: true
+    footnotes-hover: true
+    font-size: 80%
+---
+
+<!--
+ATTENTION: Please submit both your .qmd file and the corresponding ".html" file after rendering.
+-->
+
+
+<!--
+Replace the placeholders (title and author) in the yaml above with your own.
+-->
+
+
+# Introduction
+<!--
+What is your experiment about (4-5 sentences).
+-->
+
+# Methodology
+<!--
+Describe your experiment design, including: (1) experiment design, (2) treatments, (3) outcome variable(s), (4) sample size, and (5) data cleaning procedures (if applicable) [8-10 sentences]
+-->
+
+# Analysis
+
+<!--
+Which statistical test is used, and why? [3-4 sentences]
+-->
+
+<!--
+Run the chosen test! To do so: (1) import the libraries you need, (2) import your data, (3) double-check the names of your IV(s) and DV, and (4) run the test. For information on the libraries and R syntax, refer to see Lecture 10.
+-->
+
+```{r}
+# import libraries
+# import data
+# test!
+
+```
+
+
+
+
+# Results
+<!--
+Report and interpret the test results. For information on what should be included, refer to lecture 10. Also add at least one plot.
+-->
+
+
+
+
+# Findings
+<!--
+Findings: Report the statistic you obtained along with the information to decide whether the null hypothesis can be rejected or not. Use a plot and/or table with a proper label.
+-->
+
+
+
+# Discussion
+<!--
+What are the implications of the study? What are possible explanations if the results do not align with your hypothesis? Any suggestions for future studies?
+-->
+
+
+
+### For your information
+<!--
+Some example code for different plots. Below is only for your information. Submit your report after removing this section.
+-->
+
+```{r}
+# the built-in R data set named ToothGrowth:
+# data from a study evaluating the effect of Vitamin C on tooth growth in Guinea pigs.
+# The experiment has been performed on 60 pigs, where each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC). Tooth length was measured and a sample of the data is shown below
+my_data = ToothGrowth
+str(my_data)
+
+# Convert dose as a factor and recode the levels
+# as D0.5, D1, D2
+my_data$dose <- factor(my_data$dose,
+                       levels = c(0.5, 1, 2),
+                       labels = c("D0.5", "D1", "D2"))
+head(my_data)
+
+# frequency table:
+table(my_data$supp, my_data$dose)
+```
+
+
+```{r}
+# Line plots with multiple groups
+# plot tooth length ("len") by groups ("dose")
+# color box plot by a second group: "supp"
+# add error bars: mean_se
+library(ggpubr)
+ggline(my_data, x = "dose", y = "len", color = "supp",
+       add = c("mean_se", "dotplot"),
+       palette = c("#00AFBB", "#E7B800"))
+
+# OR
+# using R base graphs:
+boxplot(len ~ supp * dose, data = my_data, frame = FALSE,
+        col = c("#00AFBB", "#E7B800"), ylab = "Tooth Length")
+
+# Another example: Two-way interaction plot
+interaction.plot(x.factor = my_data$dose, trace.factor = my_data$supp, 
+                 # x.factor: the factor to be plotted on x axis
+                 # trace.factor: the factor to be plotted as lines
+                 # response: a numeric variable giving the response
+                 response = my_data$len, fun = mean,
+                 # type: the type of plot (p: point, l: line, b: both point and line)
+                 type = "b", legend = TRUE,
+                 xlab = "Dose", ylab = "Tooth Length",
+                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"))
+```
+
