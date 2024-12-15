@@ -200,6 +200,15 @@ g1_data <- g1_data |>
     region_num == 4 ~ "West",
   ) %>% as.factor())
 
+# create age categorical
+g1_data <- g1_data %>%
+  mutate(age_cat = case_when(
+    age < 36 ~ "18-35",
+    age < 50 ~ "36-49",
+    age < 64 ~ "50-63",
+    TRUE ~ "64+"
+  ) %>% as.factor())
+
 # modify zip column to replace leading 0s
 g1_data <- g1_data |>
   mutate(zip = ifelse(zip < 10000, as.character(str_c('0',zip)), as.character(zip))) 
@@ -228,7 +237,7 @@ dim(g1_data)
 <!--
 Which statistical test is used, and why? [3-4 sentences]
 -->
-We could use either factorial ANOVA or Ordered Logistic Regression to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Regardless of the model selected, we will also control for age, gender, region, and political affiliation.
+We could use either factorial ANOVA to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Regardless of the model selected, we will also control for age, gender, region, and political affiliation.
 
 <!--
 Run the chosen test! To do so: (1) import the libraries you need, (2) import your data, (3) double-check the names of your IV(s) and DV, and (4) run the test. For information on the libraries and R syntax, refer to see Lecture 10.
@@ -242,7 +251,7 @@ summary(g1_data)
 
 # recreate expected results plot
 summary_table <- g1_data %>%
-  mutate(treatment = paste0(IV_org, ",\n", IV_info)) %>%
+  mutate(treatment = paste0(IV_org, ",\n", IV_stat)) %>%
   select(treatment, DV_ban, prior_knowledge) %>%
   group_by(treatment, DV_ban, prior_knowledge) %>%
   summarize(value = n())
@@ -262,7 +271,7 @@ ggplot(summary_table, aes(fill=DV_ban, y=value, x=treatment)) +
     
 # prepare data for analysis
 anova_data <- g1_data %>%
-  select(starts_with("IV"), DV_ban, gender_mfnb, political_party_dri, age, region_txt, manipulation_check, prior_knowledge) %>%
+  select(starts_with("IV"), DV_ban, gender_mfnb, political_party_dri, age_cat, region_txt, manipulation_check, prior_knowledge) %>%
   mutate(DV_ban_num = as.numeric(DV_ban),
          manipulation_check_num = as.numeric(manipulation_check),
          gender_mfnb = as.factor(gender_mfnb),
@@ -284,30 +293,31 @@ str(anova_data)
 
 # plot 2 DVs and outcome
 library("ggpubr")
-ggboxplot(anova_data, x = "IV_org", y = "DV_ban", color = "IV_stat",
+ggboxplot(anova_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
           palette = c("#00AFBB", "#E7B800"))
-ggboxplot(anova_data, x = "gender_mfnb", y = "DV_ban",
+ggboxplot(anova_data, x = "gender_mfnb", y = "DV_ban_num",
           palette = c("#00AFBB", "#E7B800"))
 table(g1_data$gender_mfnb, g1_data$DV_ban)
 
 # Two-way ANOVA with interaction
 
 # 5-category outcome (numeric)
-aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + political_party_dri + region_txt + manipulation_check + prior_knowledge, data = anova_data)
+aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + region_txt + age_cat + manipulation_check + prior_knowledge, data = anova_data)
 summary(aov_results)
 
 # manipulation check as outcome
-aov_results <- aov(manipulation_check_num ~ IV_org * IV_stat + gender_mfnb + political_party_dri + region_txt + prior_knowledge, data = anova_data)
+aov_results <- aov(manipulation_check_num ~ IV_org * IV_stat + gender_mfnb + age_cat + region_txt + prior_knowledge, data = anova_data)
 summary(aov_results)
-  
-# ordered logistic regression -- https://stats.oarc.ucla.edu/r/dae/ordinal-logistic-regression/
-olr_model <- MASS::polr(DV_ban_3 ~ IV_org * IV_stat + gender_mfnb + political_party_dri + region_txt + manipulation_check + prior_knowledge, data = anova_data, Hess=T)
-summary(olr_model)
 
-# pvalues from OLR
-ctable <- coef(summary(olr_model))
-p <- pnorm(abs(ctable[, "t value"]), lower.tail = FALSE) * 2
-p
+interaction.plot(x.factor = anova_data$IV_org, trace.factor = anova_data$IV_stat, 
+                 # x.factor: the factor to be plotted on x axis
+                 # trace.factor: the factor to be plotted as lines
+                 # response: a numeric variable giving the response
+                 response = anova_data$DV_ban_num, fun = mean,
+                 # type: the type of plot (p: point, l: line, b: both point and line)
+                 type = "b", legend = TRUE,
+                 xlab = "Source Credibility", ylab = "Support for Legislation",
+                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,5), labs(color=""))
 ```
 
 
@@ -375,14 +385,16 @@ boxplot(len ~ supp * dose, data = my_data, frame = FALSE,
         col = c("#00AFBB", "#E7B800"), ylab = "Tooth Length")
 
 # Another example: Two-way interaction plot
-interaction.plot(x.factor = my_data$dose, trace.factor = my_data$supp, 
+
+
+interaction.plot(x.factor = anova_data$IV_org, trace.factor = anova_data$IV_stat, 
                  # x.factor: the factor to be plotted on x axis
                  # trace.factor: the factor to be plotted as lines
                  # response: a numeric variable giving the response
-                 response = my_data$len, fun = mean,
+                 response = anova_data$manipulation_check_num, fun = mean,
                  # type: the type of plot (p: point, l: line, b: both point and line)
                  type = "b", legend = TRUE,
-                 xlab = "Dose", ylab = "Tooth Length",
-                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"))
+                 xlab = "Source Credibility", ylab = "Opposition to Treatment",
+                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,3), labs(color=""))
 ```
 
