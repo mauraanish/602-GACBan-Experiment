@@ -1,7 +1,7 @@
 ---
-title: "YOUR PROJECT TITLE"
+title: "How Credibility of Information About Gender Affirming Care Impacts Support for Legislation"
 subtitle: "DACSS 602 (Fall 2024)"
-author: Name 1, Name 2, and Name 3
+author: Maura Anish, Kendrick Backmon, Avery Bacon, and Jules Tucher 
 format: 
   html:
     toc: true
@@ -34,6 +34,14 @@ What is your experiment about (4-5 sentences).
 -->
 
 # Methodology
+
+In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. Credibility of information is provided by including a citation by well-known and credible source, in this case the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was "in some cases by over 70%". The four treatment graphics, including the full text of the infographic, are provided in Figure 1.
+
+The experiment's outcome variable is the degree of support for legislation banning gender-affirming care for minors. This was measured using a 5-point Likert type scale: Strongly Oppose (1), Slightly Oppose (2), Neutral (3), Slightly Approve (4), and Strongly Approve (5). 
+
+To complete the experimental design, respondents first completed an informed consent form and were asked several demographic questions. Third variables of particular interest to our research are age, gender, region, and political affiliation. Furthermore, survey respondents were asked a prior knowledge assessment to determine prior bias and understanding of the topic: "True or False: Puberty blockers are a safe and reversible treatment when prescribed by medical professionals to treat gender dysphoria in transgender minors."
+
+A total of 220 survey responses were collected. 
 <!--
 Describe your experiment design, including: (1) experiment design, (2) treatments, (3) outcome variable(s), (4) sample size, and (5) data cleaning procedures (if applicable) [8-10 sentences]
 -->
@@ -210,6 +218,8 @@ dim(g1_data)
 
 # Analysis
 
+We could use either factorial ANOVA or Ordered Logistic Regression to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Also, Ordered Logistic Regression would allow for us to control for age, gender, region, and political affiliation.
+
 <!--
 Which statistical test is used, and why? [3-4 sentences]
 -->
@@ -220,8 +230,49 @@ Run the chosen test! To do so: (1) import the libraries you need, (2) import you
 
 ```{r}
 # import libraries
+library(tidyverse)
+library(ggplot2)
+
+
 # import data
-# test!
+g1_data <- read.csv("./fa24_g1.csv") %>%
+  mutate(IV_org = as.factor(ifelse(IV_org == "no", "Non-credible", "Credible")),
+         IV_info = as.factor(ifelse(IV_info == "no", "No statistic", "Statistic")),
+         prior_knowledge = factor(g1q1, levels=c("True", "False", "I don't know")),
+         outcome = factor(g1q2,
+                          levels=c("Strongly oppose", "Slightly oppose", "Neutral", "Slightly support", "Strongly support"),
+                          ordered=TRUE),
+         manipulation_check = factor(g1q3,
+                                     levels=c("Do not support", "Support", "Undecided")))
+summary(g1_data)
+
+
+# recreate expected results plot
+summary_table <- g1_data %>%
+  mutate(treatment = paste0(IV_org, ",\n", IV_info)) %>%
+  select(treatment, outcome, prior_knowledge) %>%
+  group_by(treatment, outcome, prior_knowledge) %>%
+  summarize(value = n())
+ggplot(summary_table, aes(fill=outcome, y=value, x=treatment)) + 
+    geom_bar(position="fill", stat="identity")  +
+    facet_wrap(~ prior_knowledge) + 
+    labs(x = "Exposure", y = "Proportion of Sample") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45))
+
+
+    scale_fill_manual(values = c("#881c1c", "#ffc72c", "#212721"),
+                     name = "Orientation to\nLegislation",
+                     labels = c("Against", "Neutral", "Support"))
+    
+
+# data cleaning steps
+
+# explore consistency with manipulation check, throw out any inconsistent results
+
+# two-way ANOVA
+
+# ordered logistic regression
 
 ```
 
