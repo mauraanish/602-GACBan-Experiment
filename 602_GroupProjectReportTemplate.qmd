@@ -48,8 +48,10 @@ A total of 220 survey responses were collected.
 
 # Data Cleaning
 ```{r}
-# import tidyverse library
+# import libraries
 library(tidyverse)
+library(ggplot2)
+library("ggpubr")
 
 # read in data emailed to us by Professor Song
 g1_data <- read.csv("fa24_g1.csv")
@@ -71,7 +73,7 @@ g1_data <- g1_data |>
 g1_data <- g1_data |>
   mutate(IV_org = as.factor(ifelse(IV_org == "no", "Non-credible", "Credible")),
          IV_stat = as.factor(ifelse(IV_stat == "no", "No statistic", "Statistic")),
-         prior_knowledge = factor(g1q1, levels=c("True", "False")),
+         prior_knowledge = factor(g1q1, levels=c("True", "False", "I don't know")),
          DV_ban = factor(g1q2,
                           levels=c("Strongly oppose", "Slightly oppose", "Neutral", "Slightly support", "Strongly support"),
                           ordered=TRUE),
@@ -125,7 +127,7 @@ g1_data <- g1_data |>
     ethnicity_num == 5 | ethnicity_num == 7 | ethnicity_num == 10 ~ "Asian",
     ethnicity_num == 15 ~ "Some other race",
     ethnicity_num == 16 ~ "Prefer not to answer",
-  ))
+  ) %>% as.factor())
 g1_data <- g1_data |>
   mutate(ethnicity_poc = case_when(
     ethnicity_num == 1 ~ 0,
@@ -169,6 +171,12 @@ g1_data <- g1_data |>
     education_num == 7 ~ "Master's or professional degree",
     education_num == 8 ~ "Doctorate degree",
     education_num == -3105 ~ "None of the above",
+  ),
+  education_cat = case_when(
+    education_num < 4 ~ "High school",
+    education_num < 6 ~ "Associate's/some college",
+    education_num == 6 ~ "Bachelor's",
+    education_num < 9 ~ "Advanced degree"
   ) %>% as.factor())
 
 # create political_party_txt and political_party_dri columns
@@ -228,52 +236,8 @@ g1_data <- g1_data |>
   relocate(political_party_dri, .after=political_party_txt) |>
   relocate(region_txt, .after=region_num)
 
-# end with 220 rows and 27 columns
-dim(g1_data)
-```
-
-# Analysis
-
-We could use either factorial ANOVA or Ordered Logistic Regression to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Also, Ordered Logistic Regression would allow for us to control for age, gender, region, and political affiliation.
-
-<!--
-Which statistical test is used, and why? [3-4 sentences]
--->
-We could use either factorial ANOVA to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Regardless of the model selected, we will also control for age, gender, region, and political affiliation.
-
-<!--
-Run the chosen test! To do so: (1) import the libraries you need, (2) import your data, (3) double-check the names of your IV(s) and DV, and (4) run the test. For information on the libraries and R syntax, refer to see Lecture 10.
--->
-
-```{r}
-# import libraries
-library(ggplot2)
-
-summary(g1_data)
-
-# recreate expected results plot
-summary_table <- g1_data %>%
-  mutate(treatment = paste0(IV_org, ",\n", IV_stat)) %>%
-  select(treatment, DV_ban, prior_knowledge) %>%
-  group_by(treatment, DV_ban, prior_knowledge) %>%
-  summarize(value = n())
-ggplot(summary_table, aes(fill=DV_ban, y=value, x=treatment)) + 
-    geom_bar(position="fill", stat="identity")  +
-    facet_wrap(~ prior_knowledge) + 
-    labs(x = "Exposure", y = "Proportion of Sample") + 
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45))
-
-
-    scale_fill_manual(values = c("#881c1c", "#ffc72c", "#212721"),
-                     name = "Orientation to\nLegislation",
-                     labels = c("Against", "Neutral", "Support"))
-
-## two-way ANOVA
-    
 # prepare data for analysis
-anova_data <- g1_data %>%
-  select(starts_with("IV"), DV_ban, gender_mfnb, political_party_dri, age_cat, region_txt, manipulation_check, prior_knowledge) %>%
+clean_data <- g1_data %>%
   mutate(DV_ban_num = as.numeric(DV_ban),
          manipulation_check_num = as.numeric(manipulation_check),
          gender_mfnb = as.factor(gender_mfnb),
@@ -285,43 +249,93 @@ anova_data <- g1_data %>%
                       ordered=TRUE),
          DV_ban_3_num = as.numeric(DV_ban_3))
 
-# explore consistency with manipulation check, throw out any inconsistent results -- test for cronbach's alpha?
-table(anova_data$manipulation_check, anova_data$DV_ban)
-table(anova_data$manipulation_check, anova_data$DV_ban_3)
-ltm::cronbach.alpha(anova_data %>% select(manipulation_check, DV_ban_3), CI=T, standardized=T)
+# end with 220 rows and 32 columns
+dim(clean_data)
+```
 
+# Analysis
+
+<!--
+Which statistical test is used, and why? [3-4 sentences]
+-->
+To analyze the results of our survey, we will use a two-way factorial ANOVA model. Although the outcome variable is a Likert-type ordinal variable and not continuous, the Likert scale had five levels, which means it can approximate a continuous variable.
+
+
+Upon exploring the distribution of our experiment variables, we observed high rates of neutral respondents, as well as "I don't know" responses to our prior knowledge assessment.
+
+```{r}
+# explore experiment variables
+summary(clean_data %>% select(DV_ban, IV_stat, IV_org, manipulation_check, prior_knowledge))
+```
+
+Exploring potential third variables to include in our analysis model, we noticed a higher proportion of female respondents than male, an even distribution of education level, region and age, and a very high proportion of responses from Democrats (90%). Although political affiliation is likely related to our outcome variable, we cannot include such a skewed predictor in the model. The other 4 demographic variables will be included as third variables in the ANOVA model. 
+```{r}
+# explore demographic variables of interest
+summary(clean_data %>% select(gender_mfnb, education_cat, region_txt, political_party_dri, age_cat))
+```
+
+
+<!--
+Run the chosen test! To do so: (1) import the libraries you need, (2) import your data, (3) double-check the names of your IV(s) and DV, and (4) run the test. For information on the libraries and R syntax, refer to see Lecture 10.
+-->
+
+Prior to running the ANOVA model, we wanted to see if our manipulation check and outcome variable demonstrated consistent results. To do this, we collapsed the 5-level Likert scale outcome to a 3-level scale (Oppose, Neutral, Support) to fit the scale of the manipulation check. Then, we test Cronbach's alpha, which produces a value of -0.4. Thus, the manipulation check and outcome variable are not consistent. Of note, respondents who answered "do not support" to the manipulation check are very split on their support for legislation banning this care.
+```{r}
+
+# explore consistency with manipulation check, throw out any inconsistent results -- test for cronbach's alpha?
+table(clean_data$manipulation_check, clean_data$DV_ban)
+ltm::cronbach.alpha(clean_data %>% select(manipulation_check, DV_ban_3), CI=T, standardized=T)
+```
+
+Run the ANOVA analysis. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. The only third variable will a statistically significant relationship to the outcome variable is gender. 
+```{r}
 # confirm numeric structure of the data
-str(anova_data)
+str(clean_data %>% select(DV_ban_num, IV_org, IV_stat, gender_mfnb, region_txt, age_cat, education_cat, manipulation_check, prior_knowledge))
+
+# Two-way ANOVA with interaction using 5-category outcome (numeric)
+aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + region_txt + age_cat + education_cat + manipulation_check + prior_knowledge, data = clean_data)
+summary(aov_results)
+```
+
+Due to the inconsistency between our outcome variable and manipulation check, we also explore using the manipulation check in place of our outcome variable. Specifically, we are curious if the measured independent variables have an effect on support for gender-affirming care.
+```{r}
+# manipulation check as outcome
+aov_results <- aov(manipulation_check_num ~ IV_org * IV_stat + gender_mfnb + age_cat + education_cat + region_txt + prior_knowledge, data = clean_data)
+summary(aov_results)
+```
+
+```{r plots}
+# recreate expected results plot
+summary_table <- g1_data %>%
+  mutate(treatment = paste0(IV_org, ",\n", IV_stat)) %>%
+  select(treatment, DV_ban) %>%
+  group_by(treatment, DV_ban) %>%
+  summarize(value = n())
+ggplot(summary_table, aes(fill=DV_ban, y=value, x=treatment)) + 
+    geom_bar(position="fill", stat="identity")  +
+    labs(x = "Exposure", y = "Proportion of Sample", fill = "Orientation to\nLegislation") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45))
 
 # plot 2 DVs and outcome
-library("ggpubr")
-ggboxplot(anova_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
+ggboxplot(clean_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
           palette = c("#00AFBB", "#E7B800"))
-ggboxplot(anova_data, x = "gender_mfnb", y = "DV_ban_num",
+ggboxplot(clean_data, x = "gender_mfnb", y = "DV_ban_num",
           palette = c("#00AFBB", "#E7B800"))
 table(g1_data$gender_mfnb, g1_data$DV_ban)
 
-# Two-way ANOVA with interaction
-
-# 5-category outcome (numeric)
-aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + region_txt + age_cat + manipulation_check + prior_knowledge, data = anova_data)
-summary(aov_results)
-
-# manipulation check as outcome
-aov_results <- aov(manipulation_check_num ~ IV_org * IV_stat + gender_mfnb + age_cat + region_txt + prior_knowledge, data = anova_data)
-summary(aov_results)
-
-interaction.plot(x.factor = anova_data$IV_org, trace.factor = anova_data$IV_stat, 
+# interaction plot
+interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat, 
                  # x.factor: the factor to be plotted on x axis
                  # trace.factor: the factor to be plotted as lines
                  # response: a numeric variable giving the response
-                 response = anova_data$DV_ban_num, fun = mean,
+                 response = clean_data$DV_ban_num, fun = mean,
                  # type: the type of plot (p: point, l: line, b: both point and line)
                  type = "b", legend = TRUE,
                  xlab = "Source Credibility", ylab = "Support for Legislation",
                  pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,5), labs(color=""))
-```
 
+```
 
 
 
@@ -389,11 +403,11 @@ boxplot(len ~ supp * dose, data = my_data, frame = FALSE,
 # Another example: Two-way interaction plot
 
 
-interaction.plot(x.factor = anova_data$IV_org, trace.factor = anova_data$IV_stat, 
+interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat, 
                  # x.factor: the factor to be plotted on x axis
                  # trace.factor: the factor to be plotted as lines
                  # response: a numeric variable giving the response
-                 response = anova_data$manipulation_check_num, fun = mean,
+                 response = clean_data$manipulation_check_num, fun = mean,
                  # type: the type of plot (p: point, l: line, b: both point and line)
                  type = "b", legend = TRUE,
                  xlab = "Source Credibility", ylab = "Opposition to Treatment",
