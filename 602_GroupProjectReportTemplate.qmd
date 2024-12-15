@@ -38,6 +38,176 @@ What is your experiment about (4-5 sentences).
 Describe your experiment design, including: (1) experiment design, (2) treatments, (3) outcome variable(s), (4) sample size, and (5) data cleaning procedures (if applicable) [8-10 sentences]
 -->
 
+# Data Cleaning
+```{r}
+# import tidyverse library
+library(tidyverse)
+
+# read in data emailed to us by Professor Song
+g1_data <- read.csv("fa24_g1.csv")
+
+# start with 220 rows and 17 columns 
+dim(g1_data) 
+
+# get rid of X column
+g1_data <- select(g1_data, 2:17)
+
+# rename some columns
+g1_data <- g1_data |>
+  rename(IV_stat = IV_info, prior_knowledge = g1q1, DV_ban = g1q2, 
+         manipulation_check = g1q3, gender_num = gender, hhi_num = hhi,
+         ethnicity_num = ethnicity, hispanic_num = hispanic,
+         education_num = education, political_party_num = political_party,
+         region_num = region, gender_mfnb = g5sd1)
+
+# change values of IV_stat
+g1_data <- g1_data |>
+  mutate(IV_stat = ifelse(IV_stat=="info", "stat", "no"))
+
+# create gender_mf column
+g1_data <- g1_data |>
+  mutate(gender_mf = ifelse(gender_num==1, "Male", "Female"))
+
+# create genders_equal column
+g1_data <- g1_data |>
+  mutate(genders_equal = ifelse(gender_mf == gender_mfnb, TRUE, FALSE))
+
+# create hhi_txt column
+g1_data <- g1_data |>
+  mutate(hhi_txt = case_when(
+    hhi_num == 1 ~ "Less than $14,999",
+    hhi_num == 2 ~ "$15,000 to $19,999",
+    hhi_num == 3 ~ "$20,000 to $24,999",
+    hhi_num == 4 ~ "$25,000 to $29,999",
+    hhi_num == 5 ~ "$30,000 to $34,999",
+    hhi_num == 6 ~ "$35,000 to $39,999",
+    hhi_num == 7 ~ "$40,000 to $44,999",
+    hhi_num == 8 ~ "$45,000 to $49,999",
+    hhi_num == 9 ~ "$50,000 to $54,999",
+    hhi_num == 10 ~ "$55,000 to $59,999",
+    hhi_num == 11 ~ "$60,000 to $64,999",
+    hhi_num == 12 ~ "$65,000 to $69,999",
+    hhi_num == 13 ~ "$70,000 to $74,999",
+    hhi_num == 14 ~ "$75,000 to $79,999",
+    hhi_num == 15 ~ "$80,000 to $84,999",
+    hhi_num == 16 ~ "$85,000 to $89,999",
+    hhi_num == 17 ~ "$90,000 to $94,999",
+    hhi_num == 18 ~ "$95,000 to $99,999",
+    hhi_num == 19 ~ "$100,000 to $124,999",
+    hhi_num == 20 ~ "$125,000 to $149,999",
+    hhi_num == 21 ~ "$150,000 to $174,999",
+    hhi_num == 22 ~ "$175,000 to $199,999",
+    hhi_num == 23 ~ "$200,000 to $249,999",
+    hhi_num == 24 ~ "$250,000 and above"
+  ))
+
+# create ethnicity_txt and ethnicity_poc columns
+g1_data <- g1_data |>
+  mutate(ethnicity_txt = case_when(
+    ethnicity_num == 1 ~ "White",
+    ethnicity_num == 2 ~ "Black or African American",
+    ethnicity_num == 3 ~ "American Indian or Alaska Native",
+    ethnicity_num == 5 | ethnicity_num == 7 | ethnicity_num == 10 ~ "Asian",
+    ethnicity_num == 15 ~ "Some other race",
+    ethnicity_num == 16 ~ "Prefer not to answer",
+  ))
+g1_data <- g1_data |>
+  mutate(ethnicity_poc = case_when(
+    ethnicity_num == 1 ~ 0,
+    ethnicity_num == 2 | ethnicity_num == 3 | ethnicity_num == 5 |
+      ethnicity_num == 7 | ethnicity_num == 10 | ethnicity_num == 15 ~ 1,
+    ethnicity_num == 16 ~ NA 
+  ))
+
+# create hispanic_txt and hispanic_yes columns
+g1_data <- g1_data |>
+  mutate(hispanic_txt = case_when(
+    hispanic_num == 1 ~ "No, not of Hispanic, Latino, or Spanish origin",
+    hispanic_num == 2 ~ "Yes, Mexican, Mexican American, Chicano",
+    hispanic_num == 3 ~ "Yes, Cuban",
+    hispanic_num == 4 ~ "Yes, Argentinian",
+    hispanic_num == 5 ~ "Yes, Colombian",
+    hispanic_num == 9 ~ "Yes, Nicaraguan",
+    hispanic_num == 10 ~ "Yes, Panamanian",
+    hispanic_num == 12 ~ "Yes, Spanish",
+    hispanic_num == 14 ~ "Yes, Other Country",
+    hispanic_num == 16 ~ "Prefer not to answer",
+  ))
+g1_data <- g1_data |>
+  mutate(hispanic_yes = case_when(
+    hispanic_num == 1 ~ 0,
+    hispanic_num == 2 | hispanic_num == 3 | hispanic_num == 4 |
+      hispanic_num == 5 | hispanic_num == 9 | hispanic_num == 10 |
+      hispanic_num == 12 | hispanic_num == 14 ~ 1,
+    hispanic_num == 16 ~ NA 
+  ))
+
+# create education_txt column
+g1_data <- g1_data |>
+  mutate(education_txt = case_when(
+    education_num == 1 ~ "Some high school or less",
+    education_num == 2 ~ "High school graduate",
+    education_num == 3 ~ "Other post high school vocational training",
+    education_num == 4 ~ "Completed some college, but no degree",
+    education_num == 5 ~ "Associate's degree",
+    education_num == 6 ~ "Bachelor's degree",
+    education_num == 7 ~ "Master's or professional degree",
+    education_num == 8 ~ "Doctorate degree",
+    education_num == -3105 ~ "None of the above",
+  ))
+
+# create political_party_txt and political_party_dri columns
+g1_data <- g1_data |>
+  mutate(political_party_txt = case_when(
+    political_party_num == 1 ~ "Strong Democrat",
+    political_party_num == 2 ~ "Not very strong Democrat",
+    political_party_num == 3 ~ "Independent Democrat",
+    political_party_num == 4 ~ "Independent - neither",
+    political_party_num == 5 ~ "Independent Republican",
+    political_party_num == 6 ~ "Other - leaning Democrat",
+    political_party_num == 7 ~ "Other - neither",
+    political_party_num == 8 ~ "Other - leaning Republican",
+  ))
+g1_data <- g1_data |>
+  mutate(political_party_dri = case_when(
+    political_party_num == 1 | political_party_num == 2 |
+      political_party_num == 3 | political_party_num == 6 ~ "Democrat",
+    political_party_num == 5 | political_party_num == 8 ~ "Republican",
+    political_party_num == 4 | political_party_num == 7 ~ "Independent"
+  ))
+
+# create region_txt column
+g1_data <- g1_data |>
+  mutate(region_txt = case_when(
+    region_num == 1 ~ "Northeast",
+    region_num == 2 ~ "Midwest",
+    region_num == 3 ~ "South",
+    region_num == 4 ~ "West",
+  ))
+
+# modify zip column to replace leading 0s
+g1_data <- g1_data |>
+  mutate(zip = ifelse(zip < 10000, as.character(str_c('0',zip)), as.character(zip))) 
+
+# move columns so similar columns are near each other
+g1_data <- g1_data |>
+  relocate(gender_mf, .after=gender_num) |>
+  relocate(gender_mfnb, .after=gender_mf) |>
+  relocate(genders_equal, .after=gender_mfnb) |>
+  relocate(hhi_txt, .after=hhi_num) |>
+  relocate(ethnicity_txt, .after=ethnicity_num) |>
+  relocate(ethnicity_poc, .after=ethnicity_txt) |>
+  relocate(hispanic_txt, .after=hispanic_num) |>
+  relocate(hispanic_yes, .after=hispanic_txt) |>
+  relocate(education_txt, .after=education_num) |>
+  relocate(political_party_txt, .after=political_party_num) |>
+  relocate(political_party_dri, .after=political_party_txt) |>
+  relocate(region_txt, .after=region_num)
+
+# end with 220 rows and 27 columns
+dim(g1_data)
+```
+
 # Analysis
 
 <!--
