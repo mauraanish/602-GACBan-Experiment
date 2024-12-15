@@ -234,6 +234,8 @@ dim(g1_data)
 
 # Analysis
 
+We could use either factorial ANOVA or Ordered Logistic Regression to explore the results of our survey. Because the outcome variable is a Likert-type ordinal variable and not continuous, it does not meet the continuity assumption for factorial ANOVA. Also, Ordered Logistic Regression would allow for us to control for age, gender, region, and political affiliation.
+
 <!--
 Which statistical test is used, and why? [3-4 sentences]
 -->
