@@ -132,13 +132,18 @@ Replace the placeholders (title and author) in the yaml above with your own.
 <!--
 What is your experiment about (4-5 sentences).
 -->
+<p>This project examines public support for gender-affirming care. In the United States, gender affirming care has become a politically polarizing issue. The media environment is highly reactionary and information sharing is very impulsive, resulting in widely disseminated false information. Given the increase in media coverage and the spread of misinformation about transgender healthcare, we are curious about the impact of perceived credibility of information about gender-affirming care on support for legislative regulations. To reduce complexity, we honed in on one myth about transgender healthcare: that puberty blockers, a medication that can pause the onset of puberty, are unsafe.</p>
+<p>We developed three hypotheses to guide this study:</p>
+<p>H1: Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options.</p>
+<p>H2: Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options.</p>
+<p>H3: Prior misconceptions about the safety of gender-affirming care for youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments.</p>
 </section>
 <section id="methodology" class="level1">
 <h1>Methodology</h1>
 <!--
 Describe your experiment design, including: (1) experiment design, (2) treatments, (3) outcome variable(s), (4) sample size, and (5) data cleaning procedures (if applicable) [8-10 sentences]
 -->
-<p>In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. Credibility of information is provided by including a citation by well-known and credible source, in this case the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was “in some cases by over 70%”. The four treatment graphics, including the full text of the infographic, are provided in Figure 1.</p>
+<p>In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. Credibility of information is provided by including a citation by well-known and credible source, in this case the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was “in some cases by over 70%”. The four treatment graphics, including the full text of the infographic, are provided below.</p>
 <p><img src="Treatment%201.png" class="img-fluid quarto-figure quarto-figure-center" width="300"> <img src="Treatment%202.png" class="img-fluid quarto-figure quarto-figure-center" width="300"> <img src="Treatment%203.png" class="img-fluid quarto-figure quarto-figure-center" width="300"> <img src="Treatment%204.png" class="img-fluid quarto-figure quarto-figure-center" width="300"></p>
 <p>The experiment’s outcome variable is the degree of support for legislation banning gender-affirming care for minors. This was measured using a 5-point Likert type scale: Strongly Oppose (1), Slightly Oppose (2), Neutral (3), Slightly Approve (4), and Strongly Approve (5).</p>
 <p>To complete the experimental design, respondents first completed an informed consent form and were asked several demographic questions. Third variables of particular interest to our research are age, gender, region, and political affiliation. Furthermore, survey respondents were asked a prior knowledge assessment to determine prior bias and understanding of the topic: “True or False: Puberty blockers are a safe and reversible treatment when prescribed by medical professionals to treat gender dysphoria in transgender minors.”</p>
@@ -146,6 +151,7 @@ Describe your experiment design, including: (1) experiment design, (2) treatment
 </section>
 <section id="data-cleaning" class="level1">
 <h1>Data Cleaning</h1>
+<p>To clean our data, we renamed columns and decoded key demographic variables. Furthermore, we collapsed the categories for age, education, and political party to simplify the variables potentially included in our model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -162,218 +168,216 @@ Describe your experiment design, including: (1) experiment design, (2) treatment
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggpubr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ggpubr' was built under R version 4.4.2</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data emailed to us by Professor Song</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"fa24_g1.csv"</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># start with 220 rows and 17 columns </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(g1_data) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggpubr"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data emailed to us by Professor Song</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"fa24_g1.csv"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># start with 220 rows and 17 columns </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(g1_data) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 220  17</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get rid of X column</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> <span class="fu">select</span>(g1_data, <span class="dv">2</span><span class="sc">:</span><span class="dv">17</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rename some columns</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">IV_stat =</span> IV_info, <span class="at">gender_num =</span> gender, <span class="at">hhi_num =</span> hhi,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">ethnicity_num =</span> ethnicity, <span class="at">hispanic_num =</span> hispanic,</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">education_num =</span> education, <span class="at">political_party_num =</span> political_party,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">region_num =</span> region, <span class="at">gender_mfnb =</span> g5sd1)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># change values of IV_stat</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">IV_org =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(IV_org <span class="sc">==</span> <span class="st">"no"</span>, <span class="st">"Non-credible"</span>, <span class="st">"Credible"</span>)),</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">IV_stat =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(IV_stat <span class="sc">==</span> <span class="st">"no"</span>, <span class="st">"No statistic"</span>, <span class="st">"Statistic"</span>)),</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">prior_knowledge =</span> <span class="fu">factor</span>(g1q1, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"True"</span>, <span class="st">"False"</span>, <span class="st">"I don't know"</span>)),</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban =</span> <span class="fu">factor</span>(g1q2,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Strongly oppose"</span>, <span class="st">"Slightly oppose"</span>, <span class="st">"Neutral"</span>, <span class="st">"Slightly support"</span>, <span class="st">"Strongly support"</span>),</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ordered=</span><span class="cn">TRUE</span>),</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">manipulation_check =</span> <span class="fu">factor</span>(g1q3,</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Support"</span>, <span class="st">"Undecided"</span>, <span class="st">"Do not support"</span>),</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ordered=</span><span class="cn">TRUE</span>))</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># create gender_mf column</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender_mf =</span> <span class="fu">ifelse</span>(gender_num<span class="sc">==</span><span class="dv">1</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span>))</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># create genders_equal column</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">genders_equal =</span> <span class="fu">ifelse</span>(gender_mf <span class="sc">==</span> gender_mfnb, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co"># create hhi_txt column</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hhi_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Less than $14,999"</span>,</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"$15,000 to $19,999"</span>,</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"$20,000 to $24,999"</span>,</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"$25,000 to $29,999"</span>,</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"$30,000 to $34,999"</span>,</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"$35,000 to $39,999"</span>,</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"$40,000 to $44,999"</span>,</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"$45,000 to $49,999"</span>,</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"$50,000 to $54,999"</span>,</span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"$55,000 to $59,999"</span>,</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">"$60,000 to $64,999"</span>,</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"$65,000 to $69,999"</span>,</span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">13</span> <span class="sc">~</span> <span class="st">"$70,000 to $74,999"</span>,</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">"$75,000 to $79,999"</span>,</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">"$80,000 to $84,999"</span>,</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"$85,000 to $89,999"</span>,</span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">17</span> <span class="sc">~</span> <span class="st">"$90,000 to $94,999"</span>,</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"$95,000 to $99,999"</span>,</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">19</span> <span class="sc">~</span> <span class="st">"$100,000 to $124,999"</span>,</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"$125,000 to $149,999"</span>,</span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"$150,000 to $174,999"</span>,</span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">22</span> <span class="sc">~</span> <span class="st">"$175,000 to $199,999"</span>,</span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">23</span> <span class="sc">~</span> <span class="st">"$200,000 to $249,999"</span>,</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">24</span> <span class="sc">~</span> <span class="st">"$250,000 and above"</span></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="co"># create ethnicity_txt and ethnicity_poc columns</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ethnicity_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"White"</span>,</span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Black or African American"</span>,</span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"American Indian or Alaska Native"</span>,</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Asian"</span>,</span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">"Some other race"</span>,</span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"Prefer not to answer"</span>,</span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ethnicity_poc =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>      ethnicity_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="cn">NA</span> </span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a><span class="co"># create hispanic_txt and hispanic_yes columns</span></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hispanic_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"No, not of Hispanic, Latino, or Spanish origin"</span>,</span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Yes, Mexican, Mexican American, Chicano"</span>,</span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Yes, Cuban"</span>,</span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Yes, Argentinian"</span>,</span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Yes, Colombian"</span>,</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"Yes, Nicaraguan"</span>,</span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Yes, Panamanian"</span>,</span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"Yes, Spanish"</span>,</span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">"Yes, Other Country"</span>,</span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"Prefer not to answer"</span>,</span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hispanic_yes =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span></span>
-<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>      hispanic_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>      hispanic_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="cn">NA</span> </span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a><span class="co"># create education_txt column</span></span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">education_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Some high school or less"</span>,</span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"High school graduate"</span>,</span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Other post high school vocational training"</span>,</span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Completed some college, but no degree"</span>,</span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Associate's degree"</span>,</span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Bachelor's degree"</span>,</span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Master's or professional degree"</span>,</span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Doctorate degree"</span>,</span>
-<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="sc">-</span><span class="dv">3105</span> <span class="sc">~</span> <span class="st">"None of the above"</span>,</span>
-<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a>  <span class="at">education_cat =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"High school"</span>,</span>
-<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Associate's/some college"</span>,</span>
-<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Bachelor's"</span>,</span>
-<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"Advanced degree"</span></span>
-<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="co"># create political_party_txt and political_party_dri columns</span></span>
-<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">political_party_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Strong Democrat"</span>,</span>
-<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Not very strong Democrat"</span>,</span>
-<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Independent Democrat"</span>,</span>
-<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Independent - neither"</span>,</span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Independent Republican"</span>,</span>
-<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Other - leaning Democrat"</span>,</span>
-<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Other - neither"</span>,</span>
-<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Other - leaning Republican"</span>,</span>
-<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">political_party_dri =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span></span>
-<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>      political_party_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Democrat"</span>,</span>
-<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Republican"</span>,</span>
-<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Independent"</span></span>
-<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> as.factor)</span>
-<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="co"># create region_txt column</span></span>
-<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region_txt =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Northeast"</span>,</span>
-<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Midwest"</span>,</span>
-<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"South"</span>,</span>
-<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"West"</span>,</span>
-<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a><span class="co"># create age categorical</span></span>
-<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
-<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_cat =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">36</span> <span class="sc">~</span> <span class="st">"18-35"</span>,</span>
-<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">50</span> <span class="sc">~</span> <span class="st">"36-49"</span>,</span>
-<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">64</span> <span class="sc">~</span> <span class="st">"50-63"</span>,</span>
-<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"64+"</span></span>
-<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
-<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a><span class="co"># modify zip column to replace leading 0s</span></span>
-<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zip =</span> <span class="fu">ifelse</span>(zip <span class="sc">&lt;</span> <span class="dv">10000</span>, <span class="fu">as.character</span>(<span class="fu">str_c</span>(<span class="st">'0'</span>,zip)), <span class="fu">as.character</span>(zip))) </span>
-<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="co"># move columns so similar columns are near each other</span></span>
-<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
-<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender_mf, <span class="at">.after=</span>gender_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender_mfnb, <span class="at">.after=</span>gender_mf) <span class="sc">|&gt;</span></span>
-<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(genders_equal, <span class="at">.after=</span>gender_mfnb) <span class="sc">|&gt;</span></span>
-<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hhi_txt, <span class="at">.after=</span>hhi_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(ethnicity_txt, <span class="at">.after=</span>ethnicity_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(ethnicity_poc, <span class="at">.after=</span>ethnicity_txt) <span class="sc">|&gt;</span></span>
-<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hispanic_txt, <span class="at">.after=</span>hispanic_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hispanic_yes, <span class="at">.after=</span>hispanic_txt) <span class="sc">|&gt;</span></span>
-<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(education_txt, <span class="at">.after=</span>education_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(political_party_txt, <span class="at">.after=</span>political_party_num) <span class="sc">|&gt;</span></span>
-<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(political_party_dri, <span class="at">.after=</span>political_party_txt) <span class="sc">|&gt;</span></span>
-<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(region_txt, <span class="at">.after=</span>region_num)</span>
-<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare data for analysis</span></span>
-<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
-<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DV_ban_num =</span> <span class="fu">as.numeric</span>(DV_ban),</span>
-<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>         <span class="at">manipulation_check_num =</span> <span class="fu">as.numeric</span>(manipulation_check),</span>
-<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>         <span class="at">gender_mfnb =</span> <span class="fu">as.factor</span>(gender_mfnb),</span>
-<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban_3 =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Oppose"</span>,</span>
-<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Neutral"</span>,</span>
-<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">&gt;</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Support"</span></span>
-<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Oppose"</span>, <span class="st">"Neutral"</span>, <span class="st">"Support"</span>),</span>
-<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ordered=</span><span class="cn">TRUE</span>),</span>
-<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban_3_num =</span> <span class="fu">as.numeric</span>(DV_ban_3))</span>
-<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a><span class="co"># create numeric column for pre-test</span></span>
-<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> clean_data <span class="sc">|&gt;</span></span>
-<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prior_knowledge_num =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"True"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"I don't know"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"False"</span> <span class="sc">~</span> <span class="dv">3</span>))</span>
-<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a><span class="co"># end with 220 rows and 37 columns</span></span>
-<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(clean_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get rid of X column</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> <span class="fu">select</span>(g1_data, <span class="dv">2</span><span class="sc">:</span><span class="dv">17</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rename some columns</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">IV_stat =</span> IV_info, <span class="at">gender_num =</span> gender, <span class="at">hhi_num =</span> hhi,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">ethnicity_num =</span> ethnicity, <span class="at">hispanic_num =</span> hispanic,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">education_num =</span> education, <span class="at">political_party_num =</span> political_party,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">region_num =</span> region, <span class="at">gender_mfnb =</span> g5sd1)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># change values of IV_stat</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">IV_org =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(IV_org <span class="sc">==</span> <span class="st">"no"</span>, <span class="st">"Non-credible"</span>, <span class="st">"Credible"</span>)),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">IV_stat =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(IV_stat <span class="sc">==</span> <span class="st">"no"</span>, <span class="st">"No statistic"</span>, <span class="st">"Statistic"</span>)),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>         <span class="at">prior_knowledge =</span> <span class="fu">factor</span>(g1q1, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"True"</span>, <span class="st">"False"</span>)),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban =</span> <span class="fu">factor</span>(g1q2,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>                          <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Strongly oppose"</span>, <span class="st">"Slightly oppose"</span>, <span class="st">"Neutral"</span>, <span class="st">"Slightly support"</span>, <span class="st">"Strongly support"</span>),</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ordered=</span><span class="cn">TRUE</span>),</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">manipulation_check =</span> <span class="fu">factor</span>(g1q3,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Support"</span>, <span class="st">"Undecided"</span>, <span class="st">"Do not support"</span>),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">ordered=</span><span class="cn">TRUE</span>))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># create gender_mf column</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gender_mf =</span> <span class="fu">ifelse</span>(gender_num<span class="sc">==</span><span class="dv">1</span>, <span class="st">"Male"</span>, <span class="st">"Female"</span>))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># create genders_equal column</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">genders_equal =</span> <span class="fu">ifelse</span>(gender_mf <span class="sc">==</span> gender_mfnb, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># create hhi_txt column</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hhi_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Less than $14,999"</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"$15,000 to $19,999"</span>,</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"$20,000 to $24,999"</span>,</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"$25,000 to $29,999"</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"$30,000 to $34,999"</span>,</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"$35,000 to $39,999"</span>,</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"$40,000 to $44,999"</span>,</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"$45,000 to $49,999"</span>,</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"$50,000 to $54,999"</span>,</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"$55,000 to $59,999"</span>,</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">11</span> <span class="sc">~</span> <span class="st">"$60,000 to $64,999"</span>,</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"$65,000 to $69,999"</span>,</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">13</span> <span class="sc">~</span> <span class="st">"$70,000 to $74,999"</span>,</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">"$75,000 to $79,999"</span>,</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">"$80,000 to $84,999"</span>,</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"$85,000 to $89,999"</span>,</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">17</span> <span class="sc">~</span> <span class="st">"$90,000 to $94,999"</span>,</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"$95,000 to $99,999"</span>,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">19</span> <span class="sc">~</span> <span class="st">"$100,000 to $124,999"</span>,</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">20</span> <span class="sc">~</span> <span class="st">"$125,000 to $149,999"</span>,</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"$150,000 to $174,999"</span>,</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">22</span> <span class="sc">~</span> <span class="st">"$175,000 to $199,999"</span>,</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">23</span> <span class="sc">~</span> <span class="st">"$200,000 to $249,999"</span>,</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>    hhi_num <span class="sc">==</span> <span class="dv">24</span> <span class="sc">~</span> <span class="st">"$250,000 and above"</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="co"># create ethnicity_txt and ethnicity_poc columns</span></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ethnicity_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"White"</span>,</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Black or African American"</span>,</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"American Indian or Alaska Native"</span>,</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Asian"</span>,</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="st">"Some other race"</span>,</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"Prefer not to answer"</span>,</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ethnicity_poc =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span></span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>      ethnicity_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span> ethnicity_num <span class="sc">==</span> <span class="dv">15</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>    ethnicity_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="cn">NA</span> </span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="co"># create hispanic_txt and hispanic_yes columns</span></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hispanic_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"No, not of Hispanic, Latino, or Spanish origin"</span>,</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Yes, Mexican, Mexican American, Chicano"</span>,</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Yes, Cuban"</span>,</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Yes, Argentinian"</span>,</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Yes, Colombian"</span>,</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"Yes, Nicaraguan"</span>,</span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">~</span> <span class="st">"Yes, Panamanian"</span>,</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"Yes, Spanish"</span>,</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">"Yes, Other Country"</span>,</span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="st">"Prefer not to answer"</span>,</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hispanic_yes =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">0</span>,</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>      hispanic_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">9</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">10</span> <span class="sc">|</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>      hispanic_num <span class="sc">==</span> <span class="dv">12</span> <span class="sc">|</span> hispanic_num <span class="sc">==</span> <span class="dv">14</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>    hispanic_num <span class="sc">==</span> <span class="dv">16</span> <span class="sc">~</span> <span class="cn">NA</span> </span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="co"># create education_txt column</span></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">education_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Some high school or less"</span>,</span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"High school graduate"</span>,</span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Other post high school vocational training"</span>,</span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Completed some college, but no degree"</span>,</span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Associate's degree"</span>,</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Bachelor's degree"</span>,</span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Master's or professional degree"</span>,</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Doctorate degree"</span>,</span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="sc">-</span><span class="dv">3105</span> <span class="sc">~</span> <span class="st">"None of the above"</span>,</span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>  <span class="at">education_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"High school"</span>,</span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Associate's/some college"</span>,</span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Bachelor's"</span>,</span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>    education_num <span class="sc">&lt;</span> <span class="dv">9</span> <span class="sc">~</span> <span class="st">"Advanced degree"</span></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a><span class="co"># create political_party_txt and political_party_dri columns</span></span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">political_party_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Strong Democrat"</span>,</span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Not very strong Democrat"</span>,</span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Independent Democrat"</span>,</span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"Independent - neither"</span>,</span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">"Independent Republican"</span>,</span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Other - leaning Democrat"</span>,</span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Other - neither"</span>,</span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Other - leaning Republican"</span>,</span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">political_party_dri =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span></span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a>      political_party_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">"Democrat"</span>,</span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">5</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">8</span> <span class="sc">~</span> <span class="st">"Republican"</span>,</span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>    political_party_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">|</span> political_party_num <span class="sc">==</span> <span class="dv">7</span> <span class="sc">~</span> <span class="st">"Independent"</span></span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> as.factor)</span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a><span class="co"># create region_txt column</span></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region_txt =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Northeast"</span>,</span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">2</span> <span class="sc">~</span> <span class="st">"Midwest"</span>,</span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"South"</span>,</span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>    region_num <span class="sc">==</span> <span class="dv">4</span> <span class="sc">~</span> <span class="st">"West"</span>,</span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a><span class="co"># create age categorical</span></span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_cat =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">36</span> <span class="sc">~</span> <span class="st">"18-35"</span>,</span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">50</span> <span class="sc">~</span> <span class="st">"36-49"</span>,</span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>    age <span class="sc">&lt;</span> <span class="dv">64</span> <span class="sc">~</span> <span class="st">"50-63"</span>,</span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"64+"</span></span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">as.factor</span>())</span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a><span class="co"># modify zip column to replace leading 0s</span></span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-161"><a href="#cb5-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zip =</span> <span class="fu">ifelse</span>(zip <span class="sc">&lt;</span> <span class="dv">10000</span>, <span class="fu">as.character</span>(<span class="fu">str_c</span>(<span class="st">'0'</span>,zip)), <span class="fu">as.character</span>(zip))) </span>
+<span id="cb5-162"><a href="#cb5-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-163"><a href="#cb5-163" aria-hidden="true" tabindex="-1"></a><span class="co"># move columns so similar columns are near each other</span></span>
+<span id="cb5-164"><a href="#cb5-164" aria-hidden="true" tabindex="-1"></a>g1_data <span class="ot">&lt;-</span> g1_data <span class="sc">|&gt;</span></span>
+<span id="cb5-165"><a href="#cb5-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender_mf, <span class="at">.after=</span>gender_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-166"><a href="#cb5-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(gender_mfnb, <span class="at">.after=</span>gender_mf) <span class="sc">|&gt;</span></span>
+<span id="cb5-167"><a href="#cb5-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(genders_equal, <span class="at">.after=</span>gender_mfnb) <span class="sc">|&gt;</span></span>
+<span id="cb5-168"><a href="#cb5-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hhi_txt, <span class="at">.after=</span>hhi_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-169"><a href="#cb5-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(ethnicity_txt, <span class="at">.after=</span>ethnicity_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-170"><a href="#cb5-170" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(ethnicity_poc, <span class="at">.after=</span>ethnicity_txt) <span class="sc">|&gt;</span></span>
+<span id="cb5-171"><a href="#cb5-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hispanic_txt, <span class="at">.after=</span>hispanic_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-172"><a href="#cb5-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(hispanic_yes, <span class="at">.after=</span>hispanic_txt) <span class="sc">|&gt;</span></span>
+<span id="cb5-173"><a href="#cb5-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(education_txt, <span class="at">.after=</span>education_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-174"><a href="#cb5-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(political_party_txt, <span class="at">.after=</span>political_party_num) <span class="sc">|&gt;</span></span>
+<span id="cb5-175"><a href="#cb5-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(political_party_dri, <span class="at">.after=</span>political_party_txt) <span class="sc">|&gt;</span></span>
+<span id="cb5-176"><a href="#cb5-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(region_txt, <span class="at">.after=</span>region_num)</span>
+<span id="cb5-177"><a href="#cb5-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-178"><a href="#cb5-178" aria-hidden="true" tabindex="-1"></a><span class="co"># prepare data for analysis</span></span>
+<span id="cb5-179"><a href="#cb5-179" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-180"><a href="#cb5-180" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DV_ban_num =</span> <span class="fu">as.numeric</span>(DV_ban),</span>
+<span id="cb5-181"><a href="#cb5-181" aria-hidden="true" tabindex="-1"></a>         <span class="at">manipulation_check_num =</span> <span class="fu">as.numeric</span>(manipulation_check),</span>
+<span id="cb5-182"><a href="#cb5-182" aria-hidden="true" tabindex="-1"></a>         <span class="at">gender_mfnb =</span> <span class="fu">as.factor</span>(gender_mfnb),</span>
+<span id="cb5-183"><a href="#cb5-183" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban_3 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-184"><a href="#cb5-184" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">&lt;</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Oppose"</span>,</span>
+<span id="cb5-185"><a href="#cb5-185" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">==</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Neutral"</span>,</span>
+<span id="cb5-186"><a href="#cb5-186" aria-hidden="true" tabindex="-1"></a>           DV_ban_num <span class="sc">&gt;</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">"Support"</span></span>
+<span id="cb5-187"><a href="#cb5-187" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span> <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Oppose"</span>, <span class="st">"Neutral"</span>, <span class="st">"Support"</span>),</span>
+<span id="cb5-188"><a href="#cb5-188" aria-hidden="true" tabindex="-1"></a>                      <span class="at">ordered=</span><span class="cn">TRUE</span>),</span>
+<span id="cb5-189"><a href="#cb5-189" aria-hidden="true" tabindex="-1"></a>         <span class="at">DV_ban_3_num =</span> <span class="fu">as.numeric</span>(DV_ban_3))</span>
+<span id="cb5-190"><a href="#cb5-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-191"><a href="#cb5-191" aria-hidden="true" tabindex="-1"></a><span class="co"># create numeric column for pre-test</span></span>
+<span id="cb5-192"><a href="#cb5-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-193"><a href="#cb5-193" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> clean_data <span class="sc">|&gt;</span></span>
+<span id="cb5-194"><a href="#cb5-194" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prior_knowledge_num =</span> <span class="fu">case_when</span>(</span>
+<span id="cb5-195"><a href="#cb5-195" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"True"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb5-196"><a href="#cb5-196" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"I don't know"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb5-197"><a href="#cb5-197" aria-hidden="true" tabindex="-1"></a>    g1q1 <span class="sc">==</span> <span class="st">"False"</span> <span class="sc">~</span> <span class="dv">3</span>))</span>
+<span id="cb5-198"><a href="#cb5-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-199"><a href="#cb5-199" aria-hidden="true" tabindex="-1"></a><span class="co"># end with 220 rows and 37 columns</span></span>
+<span id="cb5-200"><a href="#cb5-200" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(clean_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 220  37</code></pre>
 </div>
@@ -384,11 +388,11 @@ Describe your experiment design, including: (1) experiment design, (2) treatment
 <!--
 Which statistical test is used, and why? [3-4 sentences]
 -->
-<p>To analyze the results of our survey, we will use a two-way factorial ANOVA model. Although the outcome variable is a Likert-type ordinal variable and not continuous, the Likert scale had five levels, which means it can approximate a continuous variable.</p>
+<p>To analyze the results of our survey, we will use a two-way factorial ANOVA model. Although the outcome variable is a Likert-type ordinal variable and not continuous, the Likert scale had five levels, which means it can approximate a continuous variable. Furthermore, our independent variable measures and demographic controls are all categorical variables, which provides groups for analysis rather than continuous predictors (like in traditional regression).</p>
 <p>Upon exploring the distribution of our experiment variables, we observed high rates of neutral respondents, as well as “I don’t know” responses to our prior knowledge assessment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore experiment variables</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(DV_ban, IV_stat, IV_org, manipulation_check, prior_knowledge))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore experiment variables</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(DV_ban, IV_stat, IV_org, manipulation_check, prior_knowledge))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              DV_ban           IV_stat             IV_org   
  Strongly oppose :58   No statistic:112   Credible    :108  
@@ -396,18 +400,18 @@ Which statistical test is used, and why? [3-4 sentences]
  Neutral         :60                                        
  Slightly support:34                                        
  Strongly support:43                                        
-      manipulation_check     prior_knowledge
- Support       :71       True        : 55   
- Undecided     :62       False       : 63   
- Do not support:87       I don't know:102   
-                                            
-                                            </code></pre>
+      manipulation_check prior_knowledge
+ Support       :71       True : 55      
+ Undecided     :62       False: 63      
+ Do not support:87       NA's :102      
+                                        
+                                        </code></pre>
 </div>
 </div>
 <p>Exploring potential third variables to include in our analysis model, we noticed a higher proportion of female respondents than male, an even distribution of education level, region and age, and a very high proportion of responses from Democrats (90%). Although political affiliation is likely related to our outcome variable, we cannot include such a skewed predictor in the model. The other 4 demographic variables will be included as third variables in the ANOVA model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore demographic variables of interest</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(gender_mfnb, education_cat, region_txt, political_party_dri, age_cat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore demographic variables of interest</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(gender_mfnb, education_cat, region_txt, political_party_dri, age_cat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> gender_mfnb                   education_cat     region_txt 
  Female:135   Advanced degree         :33    Midwest  : 46  
@@ -426,8 +430,8 @@ Run the chosen test! To do so: (1) import the libraries you need, (2) import you
 -->
 <p>Prior to running the ANOVA model, we wanted to see if our manipulation check and outcome variable demonstrated consistent results. To do this, we collapsed the 5-level Likert scale outcome to a 3-level scale (Oppose, Neutral, Support) to fit the scale of the manipulation check. Then, we test Cronbach’s alpha, which produces a value of -0.4. Thus, the manipulation check and outcome variable are not consistent. Of note, respondents who answered “do not support” to the manipulation check are very split on their support for legislation banning this care.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore consistency with manipulation check, throw out any inconsistent results -- test for cronbach's alpha?</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(clean_data<span class="sc">$</span>manipulation_check, clean_data<span class="sc">$</span>DV_ban)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># explore consistency with manipulation check, throw out any inconsistent results -- test for cronbach's alpha?</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(clean_data<span class="sc">$</span>manipulation_check, clean_data<span class="sc">$</span>DV_ban)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                
                  Strongly oppose Slightly oppose Neutral Slightly support
@@ -440,7 +444,7 @@ Run the chosen test! To do so: (1) import the libraries you need, (2) import you
   Undecided                     4
   Do not support               26</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ltm<span class="sc">::</span><span class="fu">cronbach.alpha</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(manipulation_check, DV_ban_3), <span class="at">CI=</span>T, <span class="at">standardized=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ltm<span class="sc">::</span><span class="fu">cronbach.alpha</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(manipulation_check, DV_ban_3), <span class="at">CI=</span>T, <span class="at">standardized=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Standardized Cronbach's alpha for the 'clean_data %&gt;% select(manipulation_check, DV_ban_3)' data-set
@@ -451,133 +455,7 @@ alpha: -0.403
 
 Bootstrap 95% CI based on 1000 samples
   2.5%  97.5% 
--0.860 -0.074 </code></pre>
-</div>
-</div>
-<p>Run the ANOVA analysis. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. The only third variable will a statistically significant relationship to the outcome variable is gender.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># confirm numeric structure of the data</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(DV_ban_num, IV_org, IV_stat, gender_mfnb, region_txt, age_cat, education_cat, manipulation_check, prior_knowledge))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   220 obs. of  9 variables:
- $ DV_ban_num        : num  1 2 3 3 1 5 3 2 1 1 ...
- $ IV_org            : Factor w/ 2 levels "Credible","Non-credible": 1 2 1 2 2 1 1 1 1 2 ...
- $ IV_stat           : Factor w/ 2 levels "No statistic",..: 1 2 2 1 1 1 2 2 1 1 ...
- $ gender_mfnb       : Factor w/ 2 levels "Female","Male": 1 1 2 1 1 2 1 1 1 2 ...
- $ region_txt        : Factor w/ 4 levels "Midwest","Northeast",..: 3 3 4 4 1 3 1 3 2 3 ...
- $ age_cat           : Factor w/ 4 levels "18-35","36-49",..: 2 4 1 2 3 1 2 1 2 4 ...
- $ education_cat     : Factor w/ 4 levels "Advanced degree",..: 4 4 2 4 3 3 2 4 1 1 ...
- $ manipulation_check: Ord.factor w/ 3 levels "Support"&lt;"Undecided"&lt;..: 3 3 1 2 3 1 1 3 3 3 ...
- $ prior_knowledge   : Factor w/ 3 levels "True","False",..: 1 1 1 3 2 2 1 1 3 2 ...</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way ANOVA with interaction using 5-category outcome (numeric)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>aov_results <span class="ot">&lt;-</span> <span class="fu">aov</span>(DV_ban_num <span class="sc">~</span> IV_org <span class="sc">*</span> IV_stat <span class="sc">+</span> gender_mfnb <span class="sc">+</span> region_txt <span class="sc">+</span> age_cat <span class="sc">+</span> education_cat <span class="sc">+</span> manipulation_check <span class="sc">+</span> prior_knowledge, <span class="at">data =</span> clean_data)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                    Df Sum Sq Mean Sq F value Pr(&gt;F)  
-IV_org               1    1.4   1.374   0.658 0.4183  
-IV_stat              1    0.1   0.097   0.046 0.8298  
-gender_mfnb          1   11.1  11.103   5.317 0.0221 *
-region_txt           3    1.2   0.387   0.185 0.9062  
-age_cat              3    7.1   2.367   1.133 0.3367  
-education_cat        3    4.3   1.446   0.692 0.5576  
-manipulation_check   2    5.4   2.685   1.286 0.2787  
-prior_knowledge      2    4.0   1.994   0.955 0.3867  
-IV_org:IV_stat       1    4.6   4.628   2.216 0.1381  
-Residuals          202  421.8   2.088                 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<p>Due to the inconsistency between our outcome variable and manipulation check, we also explore using the manipulation check in place of our outcome variable. Specifically, we are curious if the measured independent variables have an effect on support for gender-affirming care.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manipulation check as outcome</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>aov_results <span class="ot">&lt;-</span> <span class="fu">aov</span>(manipulation_check_num <span class="sc">~</span> IV_org <span class="sc">*</span> IV_stat <span class="sc">+</span> gender_mfnb <span class="sc">+</span> age_cat <span class="sc">+</span> education_cat <span class="sc">+</span> region_txt <span class="sc">+</span> prior_knowledge, <span class="at">data =</span> clean_data)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-IV_org            1   0.15   0.148   0.243   0.6226    
-IV_stat           1   0.27   0.270   0.443   0.5063    
-gender_mfnb       1   3.22   3.221   5.281   0.0226 *  
-age_cat           3   4.17   1.391   2.281   0.0804 .  
-education_cat     3   0.17   0.057   0.094   0.9633    
-region_txt        3   0.84   0.281   0.461   0.7101    
-prior_knowledge   2  21.60  10.801  17.707 8.11e-08 ***
-IV_org:IV_stat    1   1.97   1.969   3.228   0.0739 .  
-Residuals       204 124.44   0.610                     
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recreate expected results plot</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment =</span> <span class="fu">paste0</span>(IV_org, <span class="st">",</span><span class="sc">\n</span><span class="st">"</span>, IV_stat)) <span class="sc">%&gt;%</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(treatment, DV_ban) <span class="sc">%&gt;%</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment, DV_ban) <span class="sc">%&gt;%</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'treatment'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(summary_table, <span class="fu">aes</span>(<span class="at">fill=</span>DV_ban, <span class="at">y=</span>value, <span class="at">x=</span>treatment)) <span class="sc">+</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>, <span class="at">stat=</span><span class="st">"identity"</span>)  <span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Exposure"</span>, <span class="at">y =</span> <span class="st">"Proportion of Sample"</span>, <span class="at">fill =</span> <span class="st">"Orientation to</span><span class="sc">\n</span><span class="st">Legislation"</span>) <span class="sc">+</span> </span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/plots-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot 2 DVs and outcome</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"IV_org"</span>, <span class="at">y =</span> <span class="st">"DV_ban_num"</span>, <span class="at">color =</span> <span class="st">"IV_stat"</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/plots-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"gender_mfnb"</span>, <span class="at">y =</span> <span class="st">"DV_ban_num"</span>,</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/plots-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(g1_data<span class="sc">$</span>gender_mfnb, g1_data<span class="sc">$</span>DV_ban)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        
-         Strongly oppose Slightly oppose Neutral Slightly support
-  Female              43              13      39               18
-  Male                15              12      21               16
-        
-         Strongly support
-  Female               22
-  Male                 21</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction plot</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> clean_data<span class="sc">$</span>IV_org, <span class="at">trace.factor =</span> clean_data<span class="sc">$</span>IV_stat, </span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># x.factor: the factor to be plotted on x axis</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># trace.factor: the factor to be plotted as lines</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># response: a numeric variable giving the response</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">response =</span> clean_data<span class="sc">$</span>DV_ban_num, <span class="at">fun =</span> mean,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># type: the type of plot (p: point, l: line, b: both point and line)</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab =</span> <span class="st">"Source Credibility"</span>, <span class="at">ylab =</span> <span class="st">"Support for Legislation"</span>,</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">19</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), <span class="at">ylim =</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>), <span class="fu">labs</span>(<span class="at">color=</span><span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/plots-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+-0.839 -0.076 </code></pre>
 </div>
 </div>
 </section>
@@ -586,57 +464,76 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <!--
 Report and interpret the test results. For information on what should be included, refer to lecture 10. Also add at least one plot.
 -->
-<p>We were testing 3 hypotheses in our experiment: <br><br> <strong>H1:</strong> Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options.<br><br></p>
-<p><strong>H2:</strong> Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options. <br><br></p>
-<p><strong>H1 &amp; H2 results:</strong> These hypotheses are related, and therefore we combined the results in a single plot. <br><br></p>
-<p><strong>H3:</strong> Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments. Prior misconceptions about medical transition among youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. <br><br></p>
-<p><strong>H2 results:</strong> Since our experiment had 2 independent variables, these results are reflected in 2 plots. <br><br></p>
+<p>First, we recreated out expected results plot using our real data. We observe very marginal differences in the breakdown of our outcome variable across treatment groups.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#H1 &amp; H2 Plot</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"IV_org"</span>, <span class="at">y =</span> <span class="st">"DV_ban_num"</span>, <span class="at">color =</span> <span class="st">"IV_stat"</span>,</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hypothesis 1 &amp; 2"</span>,</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"IV Organization Type"</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"DV Support for Bans"</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Statistics</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># recreate expected results plot</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment =</span> <span class="fu">paste0</span>(IV_org, <span class="st">",</span><span class="sc">\n</span><span class="st">"</span>, IV_stat)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(treatment, DV_ban) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment, DV_ban) <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value =</span> <span class="fu">n</span>(), <span class="at">.groups=</span><span class="st">"keep"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(summary_table, <span class="fu">aes</span>(<span class="at">fill=</span>DV_ban, <span class="at">y=</span>value, <span class="at">x=</span>treatment)) <span class="sc">+</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>, <span class="at">stat=</span><span class="st">"identity"</span>)  <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Exposure"</span>, <span class="at">y =</span> <span class="st">"Proportion of Sample"</span>, <span class="at">fill =</span> <span class="st">"Orientation to</span><span class="sc">\n</span><span class="st">Legislation"</span>) <span class="sc">+</span> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/Result%20Plots-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="602_GroupProjectReportTemplate_files/figure-html/plots-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#H3 Plot</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"prior_knowledge"</span>, <span class="at">y =</span> <span class="st">"manipulation_check_num"</span>, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"IV_org"</span>),</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hypothesis 3"</span>,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Testing exposures 1 &amp; 3"</span>,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Prior Knowledge Pre-test"</span>,</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Manipulation check Post-test"</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Organization</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>H1 &amp; H2 results:</strong> These hypotheses are related, and therefore we combined the results in a single plot. <br><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#H1 &amp; H2 Plot</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"IV_org"</span>, <span class="at">y =</span> <span class="st">"DV_ban_num"</span>, <span class="at">color =</span> <span class="st">"IV_stat"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Outcome for Hypotheses 1 &amp; 2"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"IV Organization Type"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"DV Support for Bans"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Statistics</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/Result%20Plots-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="602_GroupProjectReportTemplate_files/figure-html/h1h2-box-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"prior_knowledge"</span>, <span class="at">y =</span> <span class="st">"manipulation_check_num"</span>, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"IV_stat"</span>),</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hypothesis 3"</span>,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Testing exposures 2 &amp; 4"</span>,</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Prior Knowledge Pre-test"</span>,</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Manipulation check Post-test"</span>,</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Statistics</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>H3 results:</strong> Since our experiment had 2 independent variables, these results are reflected in 2 plots. <br><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#H3 Plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"prior_knowledge"</span>, <span class="at">y =</span> <span class="st">"manipulation_check_num"</span>, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"IV_org"</span>),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hypothesis 3"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Testing exposures 1 &amp; 3"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Prior Knowledge Pre-test"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Manipulation check Post-test"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Organization</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/Result%20Plots-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="602_GroupProjectReportTemplate_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(clean_data, <span class="at">x =</span> <span class="st">"prior_knowledge"</span>, <span class="at">y =</span> <span class="st">"manipulation_check_num"</span>, <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"IV_stat"</span>),</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#ff33be"</span>, <span class="st">"#7cc8fc"</span>))<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hypothesis 3"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Testing exposures 2 &amp; 4"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Prior Knowledge Pre-test"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Manipulation check Post-test"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"IV Statistics</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="602_GroupProjectReportTemplate_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -647,66 +544,106 @@ Report and interpret the test results. For information on what should be include
 <!--
 Findings: Report the statistic you obtained along with the information to decide whether the null hypothesis can be rejected or not. Use a plot and/or table with a proper label.
 -->
-</section>
-<section id="discussion" class="level1">
-<h1>Discussion</h1>
-<!--
-What are the implications of the study? What are possible explanations if the results do not align with your hypothesis? Any suggestions for future studies?
--->
-<section id="for-your-information" class="level3">
-<h3 class="anchored" data-anchor-id="for-your-information">For your information</h3>
-<!--
-Some example code for different plots. Below is only for your information. Submit your report after removing this section.
--->
+<p>Run the ANOVA analysis and view the results of the interaction plot for our two independent variables. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. This is confirmed in the interaction plot with a very minimal intersection of the two lines. The only third variable will a statistically significant relationship to the outcome variable is gender. Thus, we cannot reject the null hypothesis that information credibility, informed by inclusion of either a source and/or a statistic, does not effect support for legislation, in this case.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the built-in R data set named ToothGrowth:</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># data from a study evaluating the effect of Vitamin C on tooth growth in Guinea pigs.</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The experiment has been performed on 60 pigs, where each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC). Tooth length was measured and a sample of the data is shown below</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">=</span> ToothGrowth</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># confirm numeric structure of the data</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(clean_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(DV_ban_num, IV_org, IV_stat, gender_mfnb, region_txt, age_cat, education_cat, manipulation_check, prior_knowledge))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   60 obs. of  3 variables:
- $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
- $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
- $ dose: num  0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 ...</code></pre>
+<pre><code>'data.frame':   220 obs. of  9 variables:
+ $ DV_ban_num        : num  1 2 3 3 1 5 3 2 1 1 ...
+ $ IV_org            : Factor w/ 2 levels "Credible","Non-credible": 1 2 1 2 2 1 1 1 1 2 ...
+ $ IV_stat           : Factor w/ 2 levels "No statistic",..: 1 2 2 1 1 1 2 2 1 1 ...
+ $ gender_mfnb       : Factor w/ 2 levels "Female","Male": 1 1 2 1 1 2 1 1 1 2 ...
+ $ region_txt        : Factor w/ 4 levels "Midwest","Northeast",..: 3 3 4 4 1 3 1 3 2 3 ...
+ $ age_cat           : Factor w/ 4 levels "18-35","36-49",..: 2 4 1 2 3 1 2 1 2 4 ...
+ $ education_cat     : Factor w/ 4 levels "Advanced degree",..: 4 4 2 4 3 3 2 4 1 1 ...
+ $ manipulation_check: Ord.factor w/ 3 levels "Support"&lt;"Undecided"&lt;..: 3 3 1 2 3 1 1 3 3 3 ...
+ $ prior_knowledge   : Factor w/ 2 levels "True","False": 1 1 1 NA 2 2 1 1 NA 2 ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert dose as a factor and recode the levels</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co"># as D0.5, D1, D2</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>my_data<span class="sc">$</span>dose <span class="ot">&lt;-</span> <span class="fu">factor</span>(my_data<span class="sc">$</span>dose,</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">levels =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"D0.5"</span>, <span class="st">"D1"</span>, <span class="st">"D2"</span>))</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way ANOVA with interaction using 5-category outcome (numeric)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>aov_results <span class="ot">&lt;-</span> <span class="fu">aov</span>(DV_ban_num <span class="sc">~</span> IV_org <span class="sc">*</span> IV_stat <span class="sc">+</span> gender_mfnb <span class="sc">+</span> region_txt <span class="sc">+</span> age_cat <span class="sc">+</span> education_cat, <span class="at">data =</span> clean_data)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   len supp dose
-1  4.2   VC D0.5
-2 11.5   VC D0.5
-3  7.3   VC D0.5
-4  5.8   VC D0.5
-5  6.4   VC D0.5
-6 10.0   VC D0.5</code></pre>
+<pre><code>                Df Sum Sq Mean Sq F value Pr(&gt;F)  
+IV_org           1    1.4   1.374   0.654 0.4196  
+IV_stat          1    0.1   0.097   0.046 0.8303  
+gender_mfnb      1   11.1  11.103   5.287 0.0225 *
+region_txt       3    1.2   0.387   0.184 0.9069  
+age_cat          3    7.1   2.367   1.127 0.3392  
+education_cat    3    4.3   1.446   0.689 0.5600  
+IV_org:IV_stat   1    3.2   3.189   1.519 0.2192  
+Residuals      206  432.6   2.100                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># frequency table:</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(my_data<span class="sc">$</span>supp, my_data<span class="sc">$</span>dose)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    
-     D0.5 D1 D2
-  OJ   10 10 10
-  VC   10 10 10</code></pre>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction plot</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> clean_data<span class="sc">$</span>IV_org, <span class="at">trace.factor =</span> clean_data<span class="sc">$</span>IV_stat, </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># x.factor: the factor to be plotted on x axis</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># trace.factor: the factor to be plotted as lines</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># response: a numeric variable giving the response</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">response =</span> clean_data<span class="sc">$</span>DV_ban_num, <span class="at">fun =</span> mean,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># type: the type of plot (p: point, l: line, b: both point and line)</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab =</span> <span class="st">"Source Credibility"</span>, <span class="at">ylab =</span> <span class="st">"Support for Legislation"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">19</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), <span class="at">ylim =</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>), <span class="fu">labs</span>(<span class="at">color=</span><span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="602_GroupProjectReportTemplate_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>We run a similar model to test our third hypothesis, using prior knowledge as our main predictor. However, since the F-statistic for prior knowledge is small (0.577) with a p-value of 0.4493, there is no statistical evidence to reject the null hypothesis that prior knowledge that puberty blockers are safe has a relationship with support for legislation to ban.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Line plots with multiple groups</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot tooth length ("len") by groups ("dose")</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># color box plot by a second group: "supp"</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># add error bars: mean_se</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggline</span>(my_data, <span class="at">x =</span> <span class="st">"dose"</span>, <span class="at">y =</span> <span class="st">"len"</span>, <span class="at">color =</span> <span class="st">"supp"</span>,</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> <span class="fu">c</span>(<span class="st">"mean_se"</span>, <span class="st">"dotplot"</span>),</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Bin width defaults to 1/30 of the range of the data. Pick better value with
-`binwidth`.</code></pre>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-way ANOVA with interaction using 5-category outcome (numeric)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>aov_results <span class="ot">&lt;-</span> <span class="fu">aov</span>(DV_ban_num <span class="sc">~</span> prior_knowledge <span class="sc">+</span> gender_mfnb <span class="sc">+</span> region_txt <span class="sc">+</span> age_cat <span class="sc">+</span> education_cat, <span class="at">data =</span> clean_data)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Df Sum Sq Mean Sq F value Pr(&gt;F)  
+prior_knowledge   1   1.34   1.339   0.577 0.4493  
+gender_mfnb       1   7.12   7.122   3.066 0.0828 .
+region_txt        3   0.94   0.313   0.135 0.9391  
+age_cat           3  13.68   4.559   1.963 0.1240  
+education_cat     3  14.16   4.719   2.032 0.1139  
+Residuals       106 246.22   2.323                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+102 observations deleted due to missingness</code></pre>
 </div>
+</div>
+<p>Although our initial aim was to assess support for legislation banning gender-affirming care, as this scenario represents the real-world political climate, we are curious about support for gender-affirming care overall. Due to the inconsistency between our outcome variable and manipulation check, we can also explore using the manipulation check in place of our outcome variable. This way, we can see if the measured independent variables have an any effect on support for gender-affirming care without the legislation component. More specifically, we test if a respondent’s prior beliefs about the safety of puberty blockers for minors has a relationship to their general support for this type of healthcare. The bar chart below demonstrates that although more than 50% of respondents were unsure about the safety of puberty blockers, support varied greatly between those who did respond to the prior knowledge assessment. This ANOVA model produces an F-statistic of 34.130 and p-value of less than 0.001 for prior knowledge, which is the statistically significance required to reject the null hypothesis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># manipulation check as outcome</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>aov_results <span class="ot">&lt;-</span> <span class="fu">aov</span>(manipulation_check_num <span class="sc">~</span> prior_knowledge <span class="sc">+</span> gender_mfnb <span class="sc">+</span> age_cat <span class="sc">+</span> education_cat <span class="sc">+</span> region_txt, <span class="at">data =</span> clean_data)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(aov_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+prior_knowledge   1  22.90  22.901  34.130 5.73e-08 ***
+gender_mfnb       1   0.59   0.588   0.877    0.351    
+age_cat           3   1.48   0.493   0.734    0.534    
+education_cat     3   1.13   0.376   0.560    0.643    
+region_txt        3   0.75   0.248   0.370    0.775    
+Residuals       106  71.13   0.671                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+102 observations deleted due to missingness</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative plot for H3</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> g1_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prior_knowledge =</span> <span class="fu">case_when</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    prior_knowledge <span class="sc">==</span> <span class="st">"True"</span> <span class="sc">~</span> <span class="st">"Puberty blockers</span><span class="sc">\n</span><span class="st">are safe</span><span class="sc">\n</span><span class="st">(N=55)"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    prior_knowledge <span class="sc">==</span> <span class="st">"False"</span> <span class="sc">~</span> <span class="st">"Puberty blockers</span><span class="sc">\n</span><span class="st">are unsafe</span><span class="sc">\n</span><span class="st">(N=63)"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"I don't know</span><span class="sc">\n</span><span class="st">(N=120)"</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="fu">factor</span>(<span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Puberty blockers</span><span class="sc">\n</span><span class="st">are safe</span><span class="sc">\n</span><span class="st">(N=55)"</span>, <span class="st">"Puberty blockers</span><span class="sc">\n</span><span class="st">are unsafe</span><span class="sc">\n</span><span class="st">(N=63)"</span>, <span class="st">"I don't know</span><span class="sc">\n</span><span class="st">(N=120)"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(prior_knowledge, manipulation_check) <span class="sc">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(prior_knowledge, manipulation_check) <span class="sc">%&gt;%</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">value =</span> <span class="fu">n</span>(), <span class="at">.groups=</span><span class="st">"keep"</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(summary_table, <span class="fu">aes</span>(<span class="at">fill=</span>manipulation_check, <span class="at">y=</span>value, <span class="at">x=</span>prior_knowledge)) <span class="sc">+</span> </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>, <span class="at">stat=</span><span class="st">"identity"</span>)  <span class="sc">+</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Prior Knowledge Assessment"</span>, <span class="at">y =</span> <span class="st">"Proportion of Sample"</span>, <span class="at">fill =</span> <span class="st">"Support for</span><span class="sc">\n</span><span class="st">Puberty Blockers"</span>) <span class="sc">+</span> </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -714,38 +651,16 @@ Some example code for different plots. Below is only for your information. Submi
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OR</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># using R base graphs:</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(len <span class="sc">~</span> supp <span class="sc">*</span> dose, <span class="at">data =</span> my_data, <span class="at">frame =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), <span class="at">ylab =</span> <span class="st">"Tooth Length"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Another example: Two-way interaction plot</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> clean_data<span class="sc">$</span>IV_org, <span class="at">trace.factor =</span> clean_data<span class="sc">$</span>IV_stat, </span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># x.factor: the factor to be plotted on x axis</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># trace.factor: the factor to be plotted as lines</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># response: a numeric variable giving the response</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">response =</span> clean_data<span class="sc">$</span>manipulation_check_num, <span class="at">fun =</span> mean,</span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># type: the type of plot (p: point, l: line, b: both point and line)</span></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab =</span> <span class="st">"Source Credibility"</span>, <span class="at">ylab =</span> <span class="st">"Opposition to Treatment"</span>,</span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">19</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#00AFBB"</span>, <span class="st">"#E7B800"</span>), <span class="at">ylim =</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="fu">labs</span>(<span class="at">color=</span><span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="602_GroupProjectReportTemplate_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 </section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<!--
+What are the implications of the study? What are possible explanations if the results do not align with your hypothesis? Any suggestions for future studies?
+-->
+<p>Through this study, we could not provide evidence for a relationship between information credibility and support for legislation, and more research is required to draw claims about the relationships between these variables. Interestingly, our outcome variable failed to capture any patterns in support of legislation banning access to puberty blockers for minors. This is likely due to the double-negative structure of the question but could also be due to inconsistent beliefs on the role of government in this issue. In future versions of this study, the survey should include additional questions to understand the nuanced relationship between support for legislation and support for healthcare. Furthermore, we may not have observed a relationship between source credibility and support for legislation because individuals form beliefs over time and in response to repeated access to information. Exposure to one infographic in a research study is likely insufficient evidence to convince individuals of a claim.</p>
+<p>We also expected to include political affiliation in the model but chose to exclude this variable because people identifying as Democratic or liberal were over-represented in the sample. Further exploration of these issues should utilize stratified or quota random sampling to ensure fair representation of political affiliation. A more diverse pool of participants might have enhanced the response data we collected.</p>
+<p>Although we were not able to conclude using our primary outcome, we did notice a statistically significant relationship between the perceived safety of puberty blockers and support for access to gender-affirming care for minors. This confirms previous research demonstrating that fears about safety may be driving concerns for minors having access to this care. It also validates the importance of spreading factual information about transgender healthcare, as understanding that puberty blockers are safe is associated with increased support for access.</p>
 </section>
 
 </main>
