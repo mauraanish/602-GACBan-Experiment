@@ -40,6 +40,11 @@ Describe your experiment design, including: (1) experiment design, (2) treatment
 -->
 In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. Credibility of information is provided by including a citation by well-known and credible source, in this case the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was "in some cases by over 70%". The four treatment graphics, including the full text of the infographic, are provided in Figure 1.
 
+![](Treatment 1.png){fig-align="center" width="300"}
+![](Treatment 2.png){fig-align="center" width="300"}
+![](Treatment 3.png){fig-align="center" width="300"}
+![](Treatment 4.png){fig-align="center" width="300"}
+
 The experiment's outcome variable is the degree of support for legislation banning gender-affirming care for minors. This was measured using a 5-point Likert type scale: Strongly Oppose (1), Slightly Oppose (2), Neutral (3), Slightly Approve (4), and Strongly Approve (5). 
 
 To complete the experimental design, respondents first completed an informed consent form and were asked several demographic questions. Third variables of particular interest to our research are age, gender, region, and political affiliation. Furthermore, survey respondents were asked a prior knowledge assessment to determine prior bias and understanding of the topic: "True or False: Puberty blockers are a safe and reversible treatment when prescribed by medical professionals to treat gender dysphoria in transgender minors."
@@ -249,7 +254,15 @@ clean_data <- g1_data %>%
                       ordered=TRUE),
          DV_ban_3_num = as.numeric(DV_ban_3))
 
-# end with 220 rows and 32 columns
+# create numeric column for pre-test
+
+clean_data <- clean_data |>
+  mutate(prior_knowledge_num = case_when(
+    g1q1 == "True" ~ 1,
+    g1q1 == "I don't know" ~ 2,
+    g1q1 == "False" ~ 3))
+
+# end with 220 rows and 37 columns
 dim(clean_data)
 ```
 
@@ -344,6 +357,50 @@ interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat
 Report and interpret the test results. For information on what should be included, refer to lecture 10. Also add at least one plot.
 -->
 
+We were testing 3 hypotheses in our experiment: <br></br>
+**H1:** Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options.<br></br>
+
+**H2:** Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options. <br></br>
+
+**H1 & H2 results:** These hypotheses are related, and therefore we combined the results in a single plot. <br></br>
+
+**H3:** Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments. Prior misconceptions about medical transition among youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. <br></br>
+
+**H2 results:** Since our experiment had 2 independent variables, these results are reflected in 2 plots.  <br></br>
+
+```{r Result Plots}
+
+#H1 & H2 Plot
+
+ggboxplot(clean_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
+          palette = c("#ff33be", "#7cc8fc"))+
+  labs(title = "Hypothesis 1 & 2",
+       x = "IV Organization Type",
+       y = "DV Support for Bans",
+       color = "IV Statistics\n")+
+  theme_minimal()
+
+
+#H3 Plot
+
+ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color = c("IV_org"),
+          palette = c("#ff33be", "#7cc8fc"))+
+  labs(title = "Hypothesis 3",
+       subtitle = "Testing exposures 1 & 3",
+       x = "Prior Knowledge Pre-test",
+       y = "Manipulation check Post-test",
+       color = "IV Organization\n")+
+  theme_minimal()
+
+ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color = c("IV_stat"),
+          palette = c("#ff33be", "#7cc8fc"))+
+  labs(title = "Hypothesis 3",
+       subtitle = "Testing exposures 2 & 4",
+       x = "Prior Knowledge Pre-test",
+       y = "Manipulation check Post-test",
+       color = "IV Statistics\n")+
+  theme_minimal()
+```
 
 
 
