@@ -32,6 +32,7 @@ Replace the placeholders (title and author) in the yaml above with your own.
 <!--
 What is your experiment about (4-5 sentences).
 -->
+This project examines public support for gender-affirming care. Given the increase in media coverage and the spread of misinformation about transgender healthcare, we saw a need to conduct a study to see if the perceived credibility of information about transgender people impacts individual actions regarding support of legislative regulations for gender affirming healthcare? We developed three hypotheses to guide this study. H1: Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options. H2: Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options. H3: Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments. Prior misconceptions about medical transition among youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. The methodology, analysis, and results of our study are described in the succeeding sections.
 
 # Methodology
 
@@ -416,58 +417,6 @@ Findings: Report the statistic you obtained along with the information to decide
 What are the implications of the study? What are possible explanations if the results do not align with your hypothesis? Any suggestions for future studies?
 -->
 
+Our results were a little surprising. The lack of diffuse support for transgender affirming care, as judged by the responses, should be further investigated. We did not see a need to include political parties or race in the analytical model. People identifying as Democratic or liberal were overrepresented in this survey. Race was not a necessary variable for the purposes of this analysis. Geographic region and age, however, were deemed appropriate metrics for the purposes of our data analysis.
 
-
-### For your information
-<!--
-Some example code for different plots. Below is only for your information. Submit your report after removing this section.
--->
-
-```{r}
-# the built-in R data set named ToothGrowth:
-# data from a study evaluating the effect of Vitamin C on tooth growth in Guinea pigs.
-# The experiment has been performed on 60 pigs, where each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC). Tooth length was measured and a sample of the data is shown below
-my_data = ToothGrowth
-str(my_data)
-
-# Convert dose as a factor and recode the levels
-# as D0.5, D1, D2
-my_data$dose <- factor(my_data$dose,
-                       levels = c(0.5, 1, 2),
-                       labels = c("D0.5", "D1", "D2"))
-head(my_data)
-
-# frequency table:
-table(my_data$supp, my_data$dose)
-```
-
-
-```{r}
-# Line plots with multiple groups
-# plot tooth length ("len") by groups ("dose")
-# color box plot by a second group: "supp"
-# add error bars: mean_se
-library(ggpubr)
-ggline(my_data, x = "dose", y = "len", color = "supp",
-       add = c("mean_se", "dotplot"),
-       palette = c("#00AFBB", "#E7B800"))
-
-# OR
-# using R base graphs:
-boxplot(len ~ supp * dose, data = my_data, frame = FALSE,
-        col = c("#00AFBB", "#E7B800"), ylab = "Tooth Length")
-
-# Another example: Two-way interaction plot
-
-
-interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat, 
-                 # x.factor: the factor to be plotted on x axis
-                 # trace.factor: the factor to be plotted as lines
-                 # response: a numeric variable giving the response
-                 response = clean_data$manipulation_check_num, fun = mean,
-                 # type: the type of plot (p: point, l: line, b: both point and line)
-                 type = "b", legend = TRUE,
-                 xlab = "Source Credibility", ylab = "Opposition to Treatment",
-                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,3), labs(color=""))
-```
-
+We did see limitations of our study. The double-negative in our main outcome question is a primary limitation. We also did not have any way to isolate the effects between the manipulation check and the outcome variables. We, furthermore, were surprised by the plurality of Democratic or liberal respondents in this survey. We believe that a more diverse pool of participants might have enhanced the response data we collected. 
