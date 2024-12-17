@@ -16,24 +16,15 @@ format:
     citations-hover: true
     footnotes-hover: true
     font-size: 80%
+    self-contained: true
 ---
-
-<!--
-ATTENTION: Please submit both your .qmd file and the corresponding ".html" file after rendering.
--->
-
-
-<!--
-Replace the placeholders (title and author) in the yaml above with your own.
--->
-
 
 # Introduction
 <!--
 What is your experiment about (4-5 sentences).
 -->
 
-This project examines public support for gender-affirming care. In the United States, gender affirming care has become a politically polarizing issue. The media environment is highly reactionary and information sharing is very impulsive, resulting in widely disseminated false information. Given the increase in media coverage and the spread of misinformation about transgender healthcare, we are curious about the impact of perceived credibility of information about gender-affirming care on support for legislative regulations. To reduce complexity, we honed in on one myth about transgender healthcare: that puberty blockers, a medication that can pause the onset of puberty, are unsafe.
+This project examines public support for gender-affirming care. In the United States, gender-affirming care has become a politically polarizing issue. The media environment is highly reactionary and information sharing is very impulsive, resulting in widely disseminated false information. Given the increase in media coverage and the spread of misinformation about transgender healthcare, we are curious about the impact of perceived credibility of information about gender-affirming care on support for legislative regulations. To reduce complexity, we honed in on one myth about transgender healthcare: that puberty blockers, a medication that can pause the onset of puberty, are unsafe.
 
 We developed three hypotheses to guide this study:
 
@@ -48,7 +39,7 @@ H3: Prior misconceptions about the safety of gender-affirming care for youth wil
 <!--
 Describe your experiment design, including: (1) experiment design, (2) treatments, (3) outcome variable(s), (4) sample size, and (5) data cleaning procedures (if applicable) [8-10 sentences]
 -->
-In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. Credibility of information is provided by including a citation by well-known and credible source, in this case the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was "in some cases by over 70%". The four treatment graphics, including the full text of the infographic, are provided below.
+In order to answer our research question, we designed a 2x2 factorial between-subjects experiment with 4 treatment groups. We tested two nominal independent variables: credibility of information and inclusion of a statistic supporting the information. The credibility of the information was manipulated by including a citation of a well-known and credible source, the Mayo Clinic. The statistic included to support the claim that puberty blockers can reduce risk of suicidality was "in some cases by over 70%". The first treatment group received credible information with a statistic, the second treatment group received credible information without a statistic, the third treatment group received non-credible information with a statistic, and the fourth treatment group received non-credible information without a statistic. The four treatment graphics, including the full text of the infographic, are provided below.
 
 ![](Treatment 1.png){fig-align="center" width="300"}
 ![](Treatment 2.png){fig-align="center" width="300"}
@@ -57,18 +48,20 @@ In order to answer our research question, we designed a 2x2 factorial between-su
 
 The experiment's outcome variable is the degree of support for legislation banning gender-affirming care for minors. This was measured using a 5-point Likert type scale: Strongly Oppose (1), Slightly Oppose (2), Neutral (3), Slightly Approve (4), and Strongly Approve (5). 
 
-To complete the experimental design, respondents first completed an informed consent form and were asked several demographic questions. Third variables of particular interest to our research are age, gender, region, and political affiliation. Furthermore, survey respondents were asked a prior knowledge assessment to determine prior bias and understanding of the topic: "True or False: Puberty blockers are a safe and reversible treatment when prescribed by medical professionals to treat gender dysphoria in transgender minors."
+To complete the experiment, respondents first completed an informed consent form and were asked several demographic questions. Third variables of particular interest to our research are age, gender, region, and political affiliation. Next, survey respondents were asked a prior knowledge assessment question to determine prior bias and understanding of the topic: "True or False: Puberty blockers are a safe and reversible treatment when prescribed by medical professionals to treat gender dysphoria in transgender minors." Finally, respondents were exposed to one of the four treatments, and they were then asked two questions to measure our outcome and check our manipulation. The outcome question was: "Would you support or oppose legislation to ban gender-affirming medical care such as puberty blockers for transgender minors under 18?" The manipulation check question was: "Do you support access to puberty blockers for transgender minors under 18 when deemed medically necessary?"
 
 A total of 220 survey responses were collected. 
 
 # Data Cleaning
 
-To clean our data, we renamed columns and decoded key demographic variables. Furthermore, we collapsed the categories for age, education, and political party to simplify the variables potentially included in our model.
+To clean our data, we renamed columns and decoded key demographic variables. Furthermore, we collapsed the categories for age, education, and political party to simplify the variables potentially included in our model. We also converted ordinal variables to numeric variables where appropriate.
 ```{r}
+#| warning: false
 # import libraries
 library(tidyverse)
 library(ggplot2)
-library("ggpubr")
+library(ggpubr)
+library(ltm)
 
 # read in data emailed to us by Professor Song
 g1_data <- read.csv("fa24_g1.csv")
@@ -76,8 +69,8 @@ g1_data <- read.csv("fa24_g1.csv")
 # start with 220 rows and 17 columns 
 dim(g1_data) 
 
-# get rid of X column
-g1_data <- select(g1_data, 2:17)
+# get rid of X column (repeat of id)
+g1_data <- dplyr::select(g1_data, 2:17)
 
 # rename some columns
 g1_data <- g1_data |>
@@ -86,16 +79,18 @@ g1_data <- g1_data |>
          education_num = education, political_party_num = political_party,
          region_num = region, gender_mfnb = g5sd1)
 
-# change values of IV_stat
+# change values of experiment questions and convert to factors
 g1_data <- g1_data |>
   mutate(IV_org = as.factor(ifelse(IV_org == "no", "Non-credible", "Credible")),
          IV_stat = as.factor(ifelse(IV_stat == "no", "No statistic", "Statistic")),
          prior_knowledge = factor(g1q1, levels=c("True", "False")),
          DV_ban = factor(g1q2,
-                          levels=c("Strongly oppose", "Slightly oppose", "Neutral", "Slightly support", "Strongly support"),
+                          levels=c("Strongly oppose", "Slightly oppose", "Neutral",
+                                   "Slightly support", "Strongly support"),
                           ordered=TRUE),
          manipulation_check = factor(g1q3,
-                                     levels=c("Support", "Undecided", "Do not support"),
+                                     levels=c("Support", "Undecided", 
+                                              "Do not support"),
                                      ordered=TRUE))
 
 # create gender_mf column
@@ -176,7 +171,7 @@ g1_data <- g1_data |>
     hispanic_num == 16 ~ NA 
   ))
 
-# create education_txt column
+# create education_txt and education_cat columns
 g1_data <- g1_data |>
   mutate(education_txt = case_when(
     education_num == 1 ~ "Some high school or less",
@@ -225,7 +220,7 @@ g1_data <- g1_data |>
     region_num == 4 ~ "West",
   ) %>% as.factor())
 
-# create age categorical
+# create age_cat column
 g1_data <- g1_data %>%
   mutate(age_cat = case_when(
     age < 36 ~ "18-35",
@@ -251,7 +246,12 @@ g1_data <- g1_data |>
   relocate(education_txt, .after=education_num) |>
   relocate(political_party_txt, .after=political_party_num) |>
   relocate(political_party_dri, .after=political_party_txt) |>
-  relocate(region_txt, .after=region_num)
+  relocate(region_txt, .after=region_num) |>
+  relocate(prior_knowledge, .after=g1q1) |>
+  relocate(DV_ban, .after=g1q2) |>
+  relocate(manipulation_check, .after=g1q3) |>
+  relocate(age_cat, .after=age) |>
+  relocate(education_cat, .after=education_txt)
 
 # prepare data for analysis
 clean_data <- g1_data %>%
@@ -267,36 +267,41 @@ clean_data <- g1_data %>%
          DV_ban_3_num = as.numeric(DV_ban_3))
 
 # create numeric column for pre-test
-
 clean_data <- clean_data |>
   mutate(prior_knowledge_num = case_when(
     g1q1 == "True" ~ 1,
     g1q1 == "I don't know" ~ 2,
     g1q1 == "False" ~ 3))
 
+# relocate more columns
+clean_data <- clean_data |>
+  relocate(DV_ban_num, .after=DV_ban) |>
+  relocate(DV_ban_3, .after=DV_ban_num) |>
+  relocate(DV_ban_3_num, .after=DV_ban_3) |>
+  relocate(prior_knowledge_num, .after=prior_knowledge) |>
+  relocate(manipulation_check_num, .after=manipulation_check)
+
 # end with 220 rows and 37 columns
 dim(clean_data)
 ```
 
 # Analysis
-
 <!--
 Which statistical test is used, and why? [3-4 sentences]
 -->
 To analyze the results of our survey, we will use a two-way factorial ANOVA model. Although the outcome variable is a Likert-type ordinal variable and not continuous, the Likert scale had five levels, which means it can approximate a continuous variable. Furthermore, our independent variable measures and demographic controls are all categorical variables, which provides groups for analysis rather than continuous predictors (like in traditional regression).
 
-
 Upon exploring the distribution of our experiment variables, we observed high rates of neutral respondents, as well as "I don't know" responses to our prior knowledge assessment.
 
 ```{r}
 # explore experiment variables
-summary(clean_data %>% select(DV_ban, IV_stat, IV_org, manipulation_check, prior_knowledge))
+summary(clean_data %>% dplyr::select(DV_ban, IV_stat, IV_org, manipulation_check, prior_knowledge))
 ```
 
-Exploring potential third variables to include in our analysis model, we noticed a higher proportion of female respondents than male, an even distribution of education level, region and age, and a very high proportion of responses from Democrats (90%). Although political affiliation is likely related to our outcome variable, we cannot include such a skewed predictor in the model. The other 4 demographic variables will be included as third variables in the ANOVA model. 
+Exploring potential third variables to include in our analysis model, we noticed a higher proportion of female respondents than male, an even distribution of education level, region, and age, and a very high proportion of responses from Democrats (90%). Although political affiliation is likely related to our outcome variable, we cannot include such a skewed predictor in the model. The other 4 demographic variables will be included as third variables in the ANOVA model. 
 ```{r}
 # explore demographic variables of interest
-summary(clean_data %>% select(gender_mfnb, education_cat, region_txt, political_party_dri, age_cat))
+summary(clean_data %>% dplyr::select(gender_mfnb, education_cat, region_txt, political_party_dri, age_cat))
 ```
 
 
@@ -304,39 +309,40 @@ summary(clean_data %>% select(gender_mfnb, education_cat, region_txt, political_
 Run the chosen test! To do so: (1) import the libraries you need, (2) import your data, (3) double-check the names of your IV(s) and DV, and (4) run the test. For information on the libraries and R syntax, refer to see Lecture 10.
 -->
 
-Prior to running the ANOVA model, we wanted to see if our manipulation check and outcome variable demonstrated consistent results. To do this, we collapsed the 5-level Likert scale outcome to a 3-level scale (Oppose, Neutral, Support) to fit the scale of the manipulation check. Then, we test Cronbach's alpha, which produces a value of -0.4. Thus, the manipulation check and outcome variable are not consistent. Of note, respondents who answered "do not support" to the manipulation check are very split on their support for legislation banning this care.
+Prior to running the ANOVA model, we wanted to see if our manipulation check and outcome variable demonstrated consistent results. If the responses to our manipulation check and outcome variable aligned, we would expect to see that respondents who strongly oppose bans of gender-affirming care would support access to puberty blockers when medically necessary. We also expected to see a lack of support of access to puberty blockers among respondents who strongly support bans of gender-affirming care.  
+
+To test this, we collapsed the 5-level Likert scale outcome to a 3-level scale (Oppose, Neutral, Support) to fit the scale of the manipulation check. Then, we tested Cronbach's alpha, which produces a value of -0.4. Thus, the manipulation check and outcome variable are not consistent. Of note, respondents who answered "do not support" to the manipulation check are very split on their support for legislation banning this care.
+
 ```{r}
-
-# explore consistency with manipulation check, throw out any inconsistent results -- test for cronbach's alpha?
+# explore consistency with manipulation check, throw out any inconsistent results
 table(clean_data$manipulation_check, clean_data$DV_ban)
-ltm::cronbach.alpha(clean_data %>% select(manipulation_check, DV_ban_3), CI=T, standardized=T)
+ltm::cronbach.alpha(clean_data %>% dplyr::select(manipulation_check, DV_ban_3), CI=T, standardized=T)
 ```
-
 
 # Results
 <!--
 Report and interpret the test results. For information on what should be included, refer to lecture 10. Also add at least one plot.
 -->
-First, we recreated out expected results plot using our real data. We observe very marginal differences in the breakdown of our outcome variable across treatment groups. 
+First, we recreated our expected results plot using our real data. We observe very marginal differences in the breakdown of our outcome variable across treatment groups. 
 ```{r plots}
 # recreate expected results plot
 summary_table <- g1_data %>%
   mutate(treatment = paste0(IV_org, ",\n", IV_stat)) %>%
-  select(treatment, DV_ban) %>%
+  dplyr::select(treatment, DV_ban) %>%
   group_by(treatment, DV_ban) %>%
   summarize(value = n(), .groups="keep")
 ggplot(summary_table, aes(fill=DV_ban, y=value, x=treatment)) + 
     geom_bar(position="fill", stat="identity")  +
-    labs(x = "Exposure", y = "Proportion of Sample", fill = "Orientation to\nLegislation") + 
+    labs(x = "Exposure", y = "Proportion of Sample", 
+         fill = "Orientation to\nLegislation") + 
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45))
 ```
 
-**H1 & H2 results:** These hypotheses are related, and therefore we combined the results in a single plot. <br></br>
+**H1 & H2 results:** These hypotheses are related, and therefore we combined the results in a single plot. It's telling that the distribution of our outcome variable looks practically identical for the credible, statistic group and the non-credible, no statistic group, when we were expecting these two groups to have the most drastic differences. <br></br>
 
 ```{r h1h2-box}
 #H1 & H2 Plot
-
 ggboxplot(clean_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
           palette = c("#ff33be", "#7cc8fc"))+
   labs(title = "Distribution of Outcome for Hypotheses 1 & 2",
@@ -346,11 +352,16 @@ ggboxplot(clean_data, x = "IV_org", y = "DV_ban_num", color = "IV_stat",
   theme_minimal()
 ```
 
-**H3 results:** Since our experiment had 2 independent variables, these results are reflected in 2 plots.  <br></br>
+**H3 results:** Since our experiment had 2 independent variables, these results are reflected in 2 plots. 
+
+The first plot shows the relationship between respondents' prior knowledge and support for access to puberty blockers for transgender minors when medically necessary, grouped by whether they received credible information or not. This plot aligns more with our expectations, because respondents who answered true to our prior knowledge question (indicating that they know puberty blockers are safe and reversible medications for transgender minors) were more likely to support access to puberty blockers (represented by lower values of the manipulation check variable). Similarly, respondents who answered false to our prior knowledge question were more likely to oppose access to puberty blockers (represented by higher values of the manipulation check variable). The credibility of the source didn't seem to have much impact on these results.
+
+The second plot shows the relationship between respondents' prior knowledge and support for puberty blockers, grouped by whether they received a statistic about the effectiveness of puberty blockers or not. Like the prior plot, this plot shows that people with prior belief in puberty blockers are more likely to support access to them, while people with prior disbelief in puberty blockers are more likely to oppose access to them, regardless of whether they were shown the statistic or not.<br></br>
 
 ```{r}
 #H3 Plot
-ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color = c("IV_org"),
+ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", 
+          color = c("IV_org"),
           palette = c("#ff33be", "#7cc8fc"))+
   labs(title = "Hypothesis 3",
        subtitle = "Testing exposures 1 & 3",
@@ -359,7 +370,8 @@ ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color
        color = "IV Organization\n")+
   theme_minimal()
 
-ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color = c("IV_stat"),
+ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", 
+          color = c("IV_stat"),
           palette = c("#ff33be", "#7cc8fc"))+
   labs(title = "Hypothesis 3",
        subtitle = "Testing exposures 2 & 4",
@@ -374,37 +386,42 @@ ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", color
 Findings: Report the statistic you obtained along with the information to decide whether the null hypothesis can be rejected or not. Use a plot and/or table with a proper label.
 -->
 
-Run the ANOVA analysis and view the results of the interaction plot for our two independent variables. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. This is confirmed in the interaction plot with a very minimal intersection of the two lines. The only third variable will a statistically significant relationship to the outcome variable is gender. Thus, we cannot reject the null hypothesis that information credibility, informed by inclusion of either a source and/or a statistic, does not effect support for legislation, in this case. 
+We proceeded to run the ANOVA analysis and view the results of the interaction plot for our two independent variables. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. The only third variable with a statistically significant relationship to the outcome variable is gender. Thus, we cannot reject the null hypothesis that information credibility, informed by inclusion of either a source and/or a statistic, does not affect support for legislation, in this case. 
+
+This is confirmed in the interaction plot, which shows very small, non-parallel slopes of the two lines. We had expected the credible, statistic group to have lower values of our outcome variable (since 1 and 2 represent opposition to legislation banning gender-affirming care) and the non-credible, no statistic group to have higher values of our outcome variable (since 4 and 5 represent support for legislation banning gender-affirming care). In reality, each of the four groups' views toward legislation banning gender-affirming care hover around 3 on the y-axis, indicating neutral or mixed feelings.
+
 ```{r}
 # confirm numeric structure of the data
-str(clean_data %>% select(DV_ban_num, IV_org, IV_stat, gender_mfnb, region_txt, age_cat, education_cat, manipulation_check, prior_knowledge))
+str(clean_data %>% dplyr::select(DV_ban_num, IV_org, IV_stat, gender_mfnb, 
+                                 region_txt, age_cat, education_cat, 
+                                 manipulation_check, prior_knowledge))
 
-# Two-way ANOVA with interaction using 5-category outcome (numeric)
-aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + region_txt + age_cat + education_cat, data = clean_data)
+# two-way ANOVA with interaction using 5-category outcome (numeric)
+aov_results <- aov(DV_ban_num ~ IV_org * IV_stat + gender_mfnb + region_txt + 
+                     age_cat + education_cat, data = clean_data)
 summary(aov_results)
 
 # interaction plot
 interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat, 
-                 # x.factor: the factor to be plotted on x axis
-                 # trace.factor: the factor to be plotted as lines
-                 # response: a numeric variable giving the response
                  response = clean_data$DV_ban_num, fun = mean,
-                 # type: the type of plot (p: point, l: line, b: both point and line)
                  type = "b", legend = TRUE,
                  xlab = "Source Credibility", ylab = "Support for Legislation",
-                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,5), labs(color=""))
+                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,5), 
+                 labs(color=""))
 ```
 We run a similar model to test our third hypothesis, using prior knowledge as our main predictor. However, since the F-statistic for prior knowledge is small (0.577) with a p-value of 0.4493, there is no statistical evidence to reject the null hypothesis that prior knowledge that puberty blockers are safe has a relationship with support for legislation to ban. 
 ```{r}
 # Two-way ANOVA with interaction using 5-category outcome (numeric)
-aov_results <- aov(DV_ban_num ~ prior_knowledge + gender_mfnb + region_txt + age_cat + education_cat, data = clean_data)
+aov_results <- aov(DV_ban_num ~ prior_knowledge + gender_mfnb + region_txt + 
+                     age_cat + education_cat, data = clean_data)
 summary(aov_results)
 ```
 
-Although our initial aim was to assess support for legislation banning gender-affirming care, as this scenario represents the real-world political climate, we are curious about support for gender-affirming care overall. Due to the inconsistency between our outcome variable and manipulation check, we can also explore using the manipulation check in place of our outcome variable. This way, we can see if the measured independent variables have an any effect on support for gender-affirming care without the legislation component. More specifically, we test if a respondent's prior beliefs about the safety of puberty blockers for minors has a relationship to their general support for this type of healthcare. The bar chart below demonstrates that although more than 50% of respondents were unsure about the safety of puberty blockers, support varied greatly between those who did respond to the prior knowledge assessment. This ANOVA model produces an F-statistic of 34.130 and p-value of less than 0.001 for prior knowledge, which is the statistically significance required to reject the null hypothesis.
+Although our initial aim was to assess support for legislation banning gender-affirming care, as this scenario represents the real-world political climate, we are curious about support for gender-affirming care overall. Due to the inconsistency between our outcome variable and manipulation check, we can also explore using the manipulation check in place of our outcome variable. This way, we can see if the measured independent variables have any effect on support for gender-affirming care without the legislation component. More specifically, we test if a respondent's prior beliefs about the safety of puberty blockers for minors has a relationship to their general support for this type of healthcare. The bar chart below demonstrates that although more than 50% of respondents were unsure about the safety of puberty blockers, support varied greatly between those who did respond to the prior knowledge assessment. This ANOVA model produces an F-statistic of 34.130 and p-value of less than 0.001 for prior knowledge, which is the statistical significance required to reject the null hypothesis.
 ```{r}
 # manipulation check as outcome
-aov_results <- aov(manipulation_check_num ~ prior_knowledge + gender_mfnb + age_cat + education_cat + region_txt, data = clean_data)
+aov_results <- aov(manipulation_check_num ~ prior_knowledge + gender_mfnb + 
+                     age_cat + education_cat + region_txt, data = clean_data)
 summary(aov_results)
 
 # Alternative plot for H3
@@ -413,17 +430,19 @@ summary_table <- g1_data %>%
     prior_knowledge == "True" ~ "Puberty blockers\nare safe\n(N=55)",
     prior_knowledge == "False" ~ "Puberty blockers\nare unsafe\n(N=63)",
     TRUE ~ "I don't know\n(N=120)"
-  ) %>% factor(levels=c("Puberty blockers\nare safe\n(N=55)", "Puberty blockers\nare unsafe\n(N=63)", "I don't know\n(N=120)"))) %>%
-  select(prior_knowledge, manipulation_check) %>%
+  ) %>% factor(levels=c("Puberty blockers\nare safe\n(N=55)", 
+                        "Puberty blockers\nare unsafe\n(N=63)", 
+                        "I don't know\n(N=120)"))) %>%
+  dplyr::select(prior_knowledge, manipulation_check) %>%
   group_by(prior_knowledge, manipulation_check) %>%
   summarize(value = n(), .groups="keep")
 ggplot(summary_table, aes(fill=manipulation_check, y=value, x=prior_knowledge)) + 
     geom_bar(position="fill", stat="identity")  +
-    labs(x = "Prior Knowledge Assessment", y = "Proportion of Sample", fill = "Support for\nPuberty Blockers") + 
+    labs(x = "Prior Knowledge Assessment", y = "Proportion of Sample", 
+         fill = "Support for\nPuberty Blockers") + 
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 0.75))
 ```
-
 
 # Discussion
 <!--
