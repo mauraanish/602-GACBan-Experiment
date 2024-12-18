@@ -26,13 +26,13 @@ What is your experiment about (4-5 sentences).
 
 This project examines public support for gender-affirming care. In the United States, gender-affirming care has become a politically polarizing issue. The media environment is highly reactionary and information sharing is very impulsive, resulting in widely disseminated false information. Given the increase in media coverage and the spread of misinformation about transgender healthcare, we are curious about the impact of perceived credibility of information about gender-affirming care on support for legislative regulations. To reduce complexity, we honed in on one myth about transgender healthcare: that puberty blockers, a medication that can pause the onset of puberty, are unsafe.
 
-We developed three hypotheses to guide this study:
+**We developed three hypotheses to guide this study:**
 
-H1: Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options.
+**H1:** Exposure to factual information presented by a credible source will have a negative impact on the support for legislation banning gender-affirming care options.
 
-H2: Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options.
+**H2:** Exposure to factual information presented alongside a statistic will have a negative impact on the support for legislation banning gender-affirming care options.
 
-H3: Prior misconceptions about the safety of gender-affirming care for youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments.
+**H3:** Prior misconceptions about the safety of gender-affirming care for youth will likely lead to higher support for bans. Vice-versa, participants with no prior misconceptions will likely have higher congruence with credible trans-affirming information. Participants may have prior experience with the topic of gender-affirming care before exposure to experimental treatments.
 
 # Methodology
 
@@ -325,6 +325,9 @@ Report and interpret the test results. For information on what should be include
 -->
 First, we recreated our expected results plot using our real data. We observe very marginal differences in the breakdown of our outcome variable across treatment groups. 
 ```{r plots}
+
+library(paletteer)
+
 # recreate expected results plot
 summary_table <- g1_data %>%
   mutate(treatment = paste0(IV_org, ",\n", IV_stat)) %>%
@@ -335,6 +338,7 @@ ggplot(summary_table, aes(fill=DV_ban, y=value, x=treatment)) +
     geom_bar(position="fill", stat="identity")  +
     labs(x = "Exposure", y = "Proportion of Sample", 
          fill = "Orientation to\nLegislation") + 
+    scale_fill_paletteer_d("MoMAColors::Connors") +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45))
 ```
@@ -362,7 +366,7 @@ The second plot shows the relationship between respondents' prior knowledge and 
 #H3 Plot
 ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", 
           color = c("IV_org"),
-          palette = c("#ff33be", "#7cc8fc"))+
+          palette = c("#ff33be", "#3aa1d8"))+
   labs(title = "Hypothesis 3",
        subtitle = "Testing exposures 1 & 3",
        x = "Prior Knowledge Pre-test",
@@ -372,7 +376,7 @@ ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num",
 
 ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num", 
           color = c("IV_stat"),
-          palette = c("#ff33be", "#7cc8fc"))+
+          palette = c("#ff33be", "#3aa1d8"))+
   labs(title = "Hypothesis 3",
        subtitle = "Testing exposures 2 & 4",
        x = "Prior Knowledge Pre-test",
@@ -386,9 +390,9 @@ ggboxplot(clean_data, x = "prior_knowledge", y = "manipulation_check_num",
 Findings: Report the statistic you obtained along with the information to decide whether the null hypothesis can be rejected or not. Use a plot and/or table with a proper label.
 -->
 
-We proceeded to run the ANOVA analysis and view the results of the interaction plot for our two independent variables. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. The only third variable with a statistically significant relationship to the outcome variable is gender. Thus, we cannot reject the null hypothesis that information credibility, informed by inclusion of either a source and/or a statistic, does not affect support for legislation, in this case. 
+We proceeded to run the ANOVA analysis and view the results of the interaction plot for our two independent variables. We report neither of our independent variables nor their interaction term as statistically significant predictors of our outcome variable. The only third variable with a statistically significant relationship to the outcome variable is gender. Thus, in this case we cannot reject the null hypothesis that information credibility, informed by inclusion of either a source and/or a statistic, does not affect support for legislation. 
 
-This is confirmed in the interaction plot, which shows very small, non-parallel slopes of the two lines. We had expected the credible, statistic group to have lower values of our outcome variable (since 1 and 2 represent opposition to legislation banning gender-affirming care) and the non-credible, no statistic group to have higher values of our outcome variable (since 4 and 5 represent support for legislation banning gender-affirming care). In reality, each of the four groups' views toward legislation banning gender-affirming care hover around 3 on the y-axis, indicating neutral or mixed feelings.
+This is confirmed in the interaction plot which shows, very small, non-parallel slopes of the two lines. We had expected the credible, statistic group to have lower values of our outcome variable (since 1 and 2 represent opposition to legislation banning gender-affirming care) and the non-credible, no statistic group to have higher values of our outcome variable (since 4 and 5 represent support for legislation banning gender-affirming care). In reality, each of the four groups' views toward legislation banning gender-affirming care hover around 3 on the y-axis, indicating neutral or mixed feelings.
 
 ```{r}
 # confirm numeric structure of the data
@@ -406,10 +410,10 @@ interaction.plot(x.factor = clean_data$IV_org, trace.factor = clean_data$IV_stat
                  response = clean_data$DV_ban_num, fun = mean,
                  type = "b", legend = TRUE,
                  xlab = "Source Credibility", ylab = "Support for Legislation",
-                 pch = c(1, 19), col = c("#00AFBB", "#E7B800"), ylim =c(1,5), 
+                 pch = c(1, 19), col = c("#ff33be", "#3aa1d8"), ylim =c(1,5), 
                  labs(color=""))
 ```
-We run a similar model to test our third hypothesis, using prior knowledge as our main predictor. However, since the F-statistic for prior knowledge is small (0.577) with a p-value of 0.4493, there is no statistical evidence to reject the null hypothesis that prior knowledge that puberty blockers are safe has a relationship with support for legislation to ban. 
+We ran a similar model to test our third hypothesis, using prior knowledge as our main predictor. However, since the F-statistic for prior knowledge is small (0.577) with a p-value of 0.4493, there is no statistical evidence to reject the null hypothesis that prior knowledge that puberty blockers are safe has a relationship with support for legislation to ban. 
 ```{r}
 # Two-way ANOVA with interaction using 5-category outcome (numeric)
 aov_results <- aov(DV_ban_num ~ prior_knowledge + gender_mfnb + region_txt + 
@@ -438,6 +442,7 @@ summary_table <- g1_data %>%
   summarize(value = n(), .groups="keep")
 ggplot(summary_table, aes(fill=manipulation_check, y=value, x=prior_knowledge)) + 
     geom_bar(position="fill", stat="identity")  +
+    scale_fill_paletteer_d("nbapalettes::heat_vice") +
     labs(x = "Prior Knowledge Assessment", y = "Proportion of Sample", 
          fill = "Support for\nPuberty Blockers") + 
     theme_minimal() +
